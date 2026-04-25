@@ -1,26 +1,26 @@
-# 🤖 AI-Powered Volunteer Coordination Platform
+#  AI-Powered Volunteer Coordination Platform
 
 A production-ready full-stack application that uses **AI and data analytics** to match volunteers to tasks optimally, predict volunteer behavior, and improve NGO operational efficiency.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 🧠 AI / ML Features
+### AI / ML Features
 - **Smart Matching Algorithm** — weighted scoring (skills 40%, location 20%, availability 20%, reliability 20%)
 - **Volunteer Reliability Prediction** — Logistic Regression on historical attendance data
 - **Task Recommendation Engine** — content-based filtering using skills, interests, past activity
 - **Demand Forecasting** — Linear Regression predicting future volunteer needs
 - **Analytics Dashboard** — engagement trends, completion rates, skill demand, drop-off patterns
 
-### 👤 Volunteer Features
+### Volunteer Features
 - JWT-based authentication
 - Profile with skills, interests, availability, location
 - AI-powered task recommendations
 - Apply to tasks & track participation history
 - Gamified progress (points + milestone badges)
 
-### 🏢 Organizer Features
+### Organizer Features
 - Create & manage tasks (skills, urgency, location, slots)
 - View AI-ranked volunteers with score breakdowns
 - Assign or auto-assign top-matched volunteers
@@ -28,7 +28,7 @@ A production-ready full-stack application that uses **AI and data analytics** to
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -40,14 +40,14 @@ A production-ready full-stack application that uses **AI and data analytics** to
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
 - PostgreSQL 14+
 
-### 1️⃣  Database Setup
+### 1️  Database Setup
 
 ```bash
 # Create the PostgreSQL database
@@ -56,7 +56,7 @@ CREATE DATABASE volunteer_platform;
 \q
 ```
 
-### 2️⃣  Backend Setup
+### 2️  Backend Setup
 
 ```bash
 cd backend
@@ -82,7 +82,7 @@ python seed_data.py
 The API will be running at `http://localhost:8000`
 Swagger docs at `http://localhost:8000/docs`
 
-### 3️⃣  Frontend Setup
+### 3️  Frontend Setup
 
 ```bash
 cd frontend
@@ -96,7 +96,7 @@ npm run dev
 
 The frontend will be at `http://localhost:5173`
 
-### 4️⃣  Demo Login
+### 4️  Demo Login
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -105,7 +105,7 @@ The frontend will be at `http://localhost:5173`
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 backend/
@@ -146,7 +146,7 @@ frontend/
 
 ---
 
-## 🧠 AI Algorithm Details
+## AI Algorithm Details
 
 ### Smart Matching
 ```
@@ -166,7 +166,7 @@ Monthly time-series of task creation and volunteer participation, projected 3 mo
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 1. **Collaborative Filtering** — recommend tasks based on similar volunteers' preferences
 2. **NLP for Task Matching** — use sentence embeddings to match task descriptions with volunteer bios
@@ -176,7 +176,7 @@ Monthly time-series of task creation and volunteer participation, projected 3 mo
 6. **A/B Testing** — experiment with different matching weight configurations
 7. **Automated Reports** — weekly email digests for organizers with AI insights
 
-## 📈 Scaling Strategy
+## Scaling Strategy
 
 1. **Microservices** — split auth, matching, analytics into separate deployable services
 2. **Redis Caching** — cache match scores and dashboard data
