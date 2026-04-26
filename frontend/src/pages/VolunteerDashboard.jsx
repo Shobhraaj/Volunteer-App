@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import StatCard from '../components/StatCard';
 import ConfirmDialog from '../components/ConfirmDialog';
 import ActivityStatus from '../components/ActivityStatus';
 import { notifyTaskApplied, notifyTaskCancelled } from '../services/notificationService';
+import { Trophy, CheckCircle, Award, BarChart3, BrainCircuit, List, FileText, MapPin } from 'lucide-react';
 
 export default function VolunteerDashboard() {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ export default function VolunteerDashboard() {
   const [allTasks, setAllTasks] = useState([]);
   const [tab, setTab] = useState('recommended');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Confirm dialog state
   const [confirm, setConfirm] = useState({ open: false, taskId: null });
@@ -85,7 +87,7 @@ export default function VolunteerDashboard() {
   }
 
   return (
-    <div className="main-content pt-24 animate-fade-in">
+    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div className="animate-slide-up">
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
@@ -102,16 +104,16 @@ export default function VolunteerDashboard() {
       </div>
 
       <div className="stats-grid">
-        <StatCard icon="🏆" label="Total Points"      value={user?.points || 0}         color="amber"   />
-        <StatCard icon="✅" label="Tasks Completed"   value={completedCount}             color="emerald" />
-        <StatCard icon="🎖️" label="Badges Earned"     value={badges.length}             color="violet"  />
-        <StatCard icon="📊" label="Reliability Score" value={`${((user?.reliability_score||0)*100).toFixed(0)}%`} color="cyan" />
+        <StatCard icon={<Trophy className="w-6 h-6" />} label="Total Points"      value={user?.points || 0}         color="amber"   />
+        <StatCard icon={<CheckCircle className="w-6 h-6" />} label="Tasks Completed"   value={completedCount}             color="emerald" />
+        <StatCard icon={<Award className="w-6 h-6" />} label="Badges Earned"     value={badges.length}             color="violet"  />
+        <StatCard icon={<BarChart3 className="w-6 h-6" />} label="Reliability Score" value={`${((user?.reliability_score||0)*100).toFixed(0)}%`} color="cyan" />
       </div>
 
       {badges.length > 0 && (
         <div className="card mb-8 animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <div className="flex items-center gap-2 mb-6">
-            <span className="text-2xl">🎖️</span>
+            <Award className="w-6 h-6 text-violet-500" />
             <h3 className="text-lg font-bold">Your Achievements</h3>
           </div>
           <div className="flex gap-3 flex-wrap">
@@ -126,9 +128,9 @@ export default function VolunteerDashboard() {
       )}
 
       <div className="flex gap-2 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl w-fit mb-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-        <TabButton active={tab==='recommended'} onClick={()=>setTab('recommended')} label="🧠 AI Recommended" />
-        <TabButton active={tab==='all'}         onClick={()=>setTab('all')}         label="📋 All Open Tasks" />
-        <TabButton active={tab==='history'}     onClick={()=>setTab('history')}     label="📜 My History" />
+        <TabButton active={tab==='recommended'} onClick={()=>setTab('recommended')} label={<span className="flex items-center gap-2"><BrainCircuit className="w-4 h-4"/> AI Recommended</span>} />
+        <TabButton active={tab==='all'}         onClick={()=>setTab('all')}         label={<span className="flex items-center gap-2"><List className="w-4 h-4"/> All Open Tasks</span>} />
+        <TabButton active={tab==='history'}     onClick={()=>setTab('history')}     label={<span className="flex items-center gap-2"><FileText className="w-4 h-4"/> My History</span>} />
       </div>
 
       <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
@@ -136,20 +138,20 @@ export default function VolunteerDashboard() {
         {tab === 'recommended' && (
           <div className="space-y-4">
             {recommendations.length === 0 ? (
-              <EmptyState icon="🧠" title="No recommendations yet" text="Complete your profile with skills & availability to get AI-powered suggestions" />
+              <EmptyState icon={<BrainCircuit className="w-12 h-12" />} title="No recommendations yet" text="Complete your profile with skills & availability to get AI-powered suggestions" />
             ) : recommendations.map((rec) => {
               const participation = appliedMap[rec.task.id];
               return (
-                <div className="rec-card apple-hover group" key={rec.task.id}>
+                <div className="rec-card apple-hover group cursor-pointer" key={rec.task.id} onClick={() => navigate(`/tasks/${rec.task.id}`)}>
                   <div className="rec-score group-hover:bg-primary-500 group-hover:text-white transition-colors">
                     {rec.relevance_score.toFixed(0)}%
                   </div>
                   <div className="flex-1">
-                    <Link to={`/tasks/${rec.task.id}`} className="text-xl font-bold text-slate-900 dark:text-white hover:text-primary-500 transition-colors block mb-2">
+                    <div className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors block mb-2">
                       {rec.task.title}
-                    </Link>
+                    </div>
                     <div className="flex items-center gap-4 mb-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      <span className="flex items-center gap-1">📍 {rec.task.location_name || 'Remote'}</span>
+                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {rec.task.location_name || 'Remote'}</span>
                       <span className={`urgency-tag urgency-${rec.task.urgency}`}>{rec.task.urgency}</span>
                     </div>
                     <div className="flex flex-wrap mb-4">
@@ -165,12 +167,12 @@ export default function VolunteerDashboard() {
                   </div>
                   <div className="flex flex-col justify-end">
                     {!participation ? (
-                      <button className="btn btn-primary" onClick={() => handleApply(rec.task.id)}>Apply Now</button>
+                      <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); handleApply(rec.task.id); }}>Apply Now</button>
                     ) : participation.status === 'applied' || participation.status === 'assigned' ? (
                       <div className="flex flex-col gap-2">
                         <span className="badge badge-emerald py-2 px-4 !text-sm">Applied ✓</span>
                         {participation.status === 'applied' && (
-                          <button className="btn btn-secondary !bg-red-500/10 !text-red-500 hover:!bg-red-500/20" onClick={() => handleCancel(participation.id)}>Withdraw</button>
+                          <button className="btn btn-secondary !bg-red-500/10 !text-red-500 hover:!bg-red-500/20" onClick={(e) => { e.stopPropagation(); handleCancel(participation.id); }}>Withdraw</button>
                         )}
                       </div>
                     ) : (
@@ -189,14 +191,14 @@ export default function VolunteerDashboard() {
             {allTasks.map((task) => {
               const participation = appliedMap[task.id];
               return (
-                <div className="card flex flex-col apple-hover group" key={task.id}>
+                <div className="card flex flex-col apple-hover group cursor-pointer" key={task.id} onClick={() => navigate(`/tasks/${task.id}`)}>
                   <div className="flex items-center justify-between mb-4">
                     <span className={`urgency-tag urgency-${task.urgency}`}>{task.urgency}</span>
                     <span className="text-[10px] font-bold text-slate-400 uppercase">{task.current_volunteers}/{task.max_volunteers} filled</span>
                   </div>
-                  <Link to={`/tasks/${task.id}`} className="text-lg font-bold text-slate-900 dark:text-white hover:text-primary-500 transition-colors mb-3">
+                  <div className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors mb-3">
                     {task.title}
-                  </Link>
+                  </div>
                   <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-6 flex-1">
                     {task.description}
                   </p>
@@ -205,11 +207,11 @@ export default function VolunteerDashboard() {
                     {task.required_skills?.length > 3 && <span className="text-[10px] font-bold text-slate-400">+ {task.required_skills.length - 3} more</span>}
                   </div>
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-400">📍 {task.location_name || 'Remote'}</span>
+                    <span className="text-xs font-bold text-slate-400 flex items-center gap-1"><MapPin className="w-3 h-3"/> {task.location_name || 'Remote'}</span>
                     {!participation ? (
-                      <button className="btn btn-primary !px-4 !py-2 !text-xs" onClick={() => handleApply(task.id)}>Apply</button>
+                      <button className="btn btn-primary !px-4 !py-2 !text-xs" onClick={(e) => { e.stopPropagation(); handleApply(task.id); }}>Apply</button>
                     ) : participation.status === 'applied' ? (
-                      <button className="btn btn-secondary !bg-red-500/10 !text-red-500 !px-4 !py-2 !text-xs" onClick={() => handleCancel(participation.id)}>Withdraw</button>
+                      <button className="btn btn-secondary !bg-red-500/10 !text-red-500 !px-4 !py-2 !text-xs" onClick={(e) => { e.stopPropagation(); handleCancel(participation.id); }}>Withdraw</button>
                     ) : (
                       <span className={`badge badge-${participation.status === 'completed' ? 'emerald' : 'cyan'}`}>{participation.status}</span>
                     )}
@@ -217,7 +219,7 @@ export default function VolunteerDashboard() {
                 </div>
               );
             })}
-            {allTasks.length === 0 && <EmptyState icon="📋" title="No open tasks right now" text="Check back soon for new opportunities!" />}
+            {allTasks.length === 0 && <EmptyState icon={<List className="w-12 h-12" />} title="No open tasks right now" text="Check back soon for new opportunities!" />}
           </div>
         )}
 
@@ -229,7 +231,7 @@ export default function VolunteerDashboard() {
               <Link to="/history" className="text-sm font-bold text-primary-500 hover:underline">View Full History →</Link>
             </div>
             {history.length === 0 ? (
-              <EmptyState icon="📜" title="No participation history" text="Apply to tasks to start building your volunteer legacy!" />
+              <EmptyState icon={<FileText className="w-12 h-12" />} title="No participation history" text="Apply to tasks to start building your volunteer legacy!" />
             ) : (
               <div className="data-table-container">
                 <table className="data-table">
@@ -313,7 +315,7 @@ function TabButton({ active, onClick, label }) {
 function EmptyState({ icon, title, text }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6 card border-dashed">
-      <div className="text-5xl mb-4 grayscale opacity-20">{icon}</div>
+      <div className="mb-4 text-slate-300 dark:text-slate-700">{icon}</div>
       <h3 className="text-lg font-bold text-slate-400 mb-1">{title}</h3>
       <p className="text-sm text-slate-400 text-center max-w-xs">{text}</p>
     </div>

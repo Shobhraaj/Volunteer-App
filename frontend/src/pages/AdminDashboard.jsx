@@ -7,6 +7,7 @@ import StatCard from '../components/StatCard';
 import ScrollReveal from '../components/ScrollReveal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { useTheme } from '../context/ThemeContext';
+import { Download, Users, BarChart3, List, Flame, CheckCircle, Search, MapPin, Edit3, Trash2 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [tasks, setTasks] = useState([]);
@@ -111,35 +112,35 @@ export default function AdminDashboard() {
   if (loading) return <div className="main-content"><div className="skeleton" style={{ height: 400 }} /></div>;
 
   return (
-    <div className="main-content pt-24 animate-fade-in">
+    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div className="animate-slide-up">
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Admin Control Panel</h1>
           <p className="text-slate-500 dark:text-slate-400 font-medium">Monitor resources, lifecycle stages, and volunteer performance.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <button className="btn btn-secondary !px-4" onClick={handleExportCSV}>📥 Export Report</button>
-          <button className="btn btn-secondary !px-4" onClick={() => navigate('/volunteers')}>👥 Volunteers</button>
-          <button className="btn btn-primary !px-4" onClick={() => navigate('/analytics')}>📊 Insights</button>
+          <button className="btn btn-secondary !px-4" onClick={handleExportCSV}><Download className="w-4 h-4"/> Export Report</button>
+          <button className="btn btn-secondary !px-4" onClick={() => navigate('/volunteers')}><Users className="w-4 h-4"/> Volunteers</button>
+          <button className="btn btn-primary !px-4" onClick={() => navigate('/analytics')}><BarChart3 className="w-4 h-4"/> Insights</button>
         </div>
       </div>
 
       {/* Global Stats */}
       <div className="stats-grid">
         <StatCard 
-          icon="📋" label="All Tasks" value={tasks.length} color="cyan" 
+          icon={<List className="w-6 h-6"/>} label="All Tasks" value={tasks.length} color="cyan" 
           onClick={() => setStatusFilter('all')} 
         />
         <StatCard 
-          icon="🔥" label="Active Tasks" value={stats?.active_tasks || 0} color="amber" 
+          icon={<Flame className="w-6 h-6"/>} label="Active Tasks" value={stats?.active_tasks || 0} color="amber" 
           onClick={() => setStatusFilter('in_progress')} 
         />
         <StatCard 
-          icon="✅" label="Completed Tasks" value={stats?.completed_tasks || 0} color="emerald" 
+          icon={<CheckCircle className="w-6 h-6"/>} label="Completed Tasks" value={stats?.completed_tasks || 0} color="emerald" 
           onClick={() => setStatusFilter('completed')} 
         />
         <StatCard 
-          icon="👥" label="Total Volunteers" value={volunteers.length} color="violet" 
+          icon={<Users className="w-6 h-6"/>} label="Total Volunteers" value={volunteers.length} color="violet" 
           onClick={() => navigate('/volunteers')} 
         />
       </div>
@@ -167,7 +168,7 @@ export default function AdminDashboard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-xs">🔍</span>
+              <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 opacity-40" />
             </div>
           </div>
           
@@ -184,10 +185,10 @@ export default function AdminDashboard() {
               </thead>
               <tbody>
                 {filteredTasks.map((task) => (
-                  <tr key={task.id} className="group">
+                  <tr key={task.id} className="group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors" onClick={() => navigate(`/tasks/${task.id}`)}>
                     <td className="font-bold text-slate-900 dark:text-white">
-                      <Link to={`/tasks/${task.id}`} className="hover:text-primary-500 transition-colors block leading-tight">{task.title}</Link>
-                      <div className="text-[10px] font-medium text-slate-400 mt-1 uppercase tracking-tighter">📍 {task.location_name || 'Remote'}</div>
+                      <div className="group-hover:text-primary-500 transition-colors block leading-tight">{task.title}</div>
+                      <div className="text-[10px] font-medium text-slate-400 mt-1 uppercase tracking-tighter flex items-center gap-1"><MapPin className="w-3 h-3"/> {task.location_name || 'Remote'}</div>
                     </td>
                     <td>
                       <span className={`badge badge-${task.status==='completed'?'emerald':task.status==='open'?'cyan':'amber'}`}>
@@ -217,8 +218,8 @@ export default function AdminDashboard() {
                     </td>
                     <td>
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 hover:bg-primary-500/10 text-primary-500 rounded-lg transition-colors" onClick={() => handleEditTask(task)} title="Edit">✏️</button>
-                        <button className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors" onClick={() => setDeleteConfirm({ open: true, taskId: task.id })} title="Delete">🗑️</button>
+                        <button className="p-2 hover:bg-primary-500/10 text-primary-500 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); handleEditTask(task); }} title="Edit"><Edit3 className="w-4 h-4"/></button>
+                        <button className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ open: true, taskId: task.id }); }} title="Delete"><Trash2 className="w-4 h-4"/></button>
                       </div>
                     </td>
                   </tr>

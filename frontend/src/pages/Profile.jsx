@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import ActivityStatus from '../components/ActivityStatus';
+import { Trophy, Award, GraduationCap, FileText, CheckCircle2, Edit3, UserCircle, History as HistoryIcon, MapPin } from 'lucide-react';
 
 const SKILL_OPTIONS = [
   'teaching','cooking','first_aid','driving','counseling',
@@ -75,39 +76,54 @@ export default function Profile() {
   const completedCount = history.filter(h => h.status === 'completed').length;
 
   return (
-    <div className="main-content fade-in">
-      <div className="page-header">
-        <h1>Your Profile</h1>
-        <p>Manage your skills, interests, availability, and certificates</p>
+    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
+      <div className="mb-10">
+        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Your Profile</h1>
+        <p className="text-slate-500 dark:text-slate-400 font-medium">Manage your skills, interests, availability, and view achievements.</p>
       </div>
 
-      <div className="profile-grid">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar */}
-        <div>
-          <div className="card" style={{ textAlign:'center' }}>
-            <div className="profile-avatar">{user?.full_name?.[0]?.toUpperCase()||'?'}</div>
-            <div className="profile-name">{user?.full_name}</div>
-            <div className="profile-role">{user?.role}</div>
+        <div className="space-y-6">
+          <div className="card flex flex-col items-center text-center">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-4xl font-bold text-white shadow-lg shadow-primary-500/20 mb-4">
+              {user?.full_name?.[0]?.toUpperCase()||'?'}
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">{user?.full_name}</h2>
+            <div className="text-sm font-black uppercase tracking-widest text-slate-400 mb-6">{user?.role}</div>
 
-            {/* Activity status */}
             {user?.role === 'volunteer' && (
-              <div style={{ display:'flex', justifyContent:'center', marginBottom:16 }}>
+              <div className="mb-6 w-full flex justify-center">
                 <ActivityStatus userId={user?.id} />
               </div>
             )}
 
-            <div className="profile-stat"><span>Points</span>      <span>🏆 {user?.points||0}</span></div>
-            <div className="profile-stat"><span>Reliability</span>  <span>{((user?.reliability_score||0)*100).toFixed(0)}%</span></div>
-            <div className="profile-stat"><span>Tasks Done</span>   <span>{completedCount}</span></div>
-            <div className="profile-stat"><span>Badges</span>       <span>{badges.length}</span></div>
+            <div className="w-full space-y-3">
+              <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <span className="text-sm font-bold text-slate-500">Points</span>
+                <span className="font-extrabold text-primary-500 flex items-center gap-1"><Trophy className="w-4 h-4" /> {user?.points||0}</span>
+              </div>
+              <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <span className="text-sm font-bold text-slate-500">Reliability</span>
+                <span className="font-bold text-slate-900 dark:text-white">{((user?.reliability_score||0)*100).toFixed(0)}%</span>
+              </div>
+              <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <span className="text-sm font-bold text-slate-500">Tasks Done</span>
+                <span className="font-bold text-slate-900 dark:text-white">{completedCount}</span>
+              </div>
+              <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <span className="text-sm font-bold text-slate-500">Badges</span>
+                <span className="font-bold text-slate-900 dark:text-white">{badges.length}</span>
+              </div>
+            </div>
           </div>
 
           {badges.length > 0 && (
-            <div className="card mt-4">
-              <h3 style={{ marginBottom:12, fontSize:'0.95rem' }}>🎖️ Badges</h3>
+            <div className="card">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><Award className="w-5 h-5 text-violet-500" /> Badges</h3>
               <div className="flex flex-col gap-2">
                 {badges.map((b,i) => (
-                  <div key={i} style={{ padding:'8px 12px', background:'rgba(139,92,246,0.08)', borderRadius:8, fontSize:'0.85rem', fontWeight:500 }}>
+                  <div key={i} className="px-4 py-3 bg-violet-500/10 border border-violet-500/20 rounded-xl text-sm font-bold text-violet-600 dark:text-violet-400">
                     {b.badge_name}
                   </div>
                 ))}
@@ -116,107 +132,120 @@ export default function Profile() {
           )}
 
           {/* Quick links */}
-          <div className="card mt-4">
-            <h3 style={{ marginBottom:12, fontSize:'0.95rem' }}>Quick Links</h3>
-            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-              <Link to="/certificates" className="btn btn-secondary" style={{ justifyContent:'flex-start' }}>🎓 My Certificates</Link>
-              <Link to="/history"      className="btn btn-secondary" style={{ justifyContent:'flex-start' }}>📜 Task History</Link>
-              <Link to="/leaderboard"  className="btn btn-secondary" style={{ justifyContent:'flex-start' }}>🏆 Leaderboard</Link>
+          <div className="card">
+            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+            <div className="flex flex-col gap-3">
+              <Link to="/certificates" className="btn btn-secondary justify-start w-full"><GraduationCap className="w-4 h-4" /> My Certificates</Link>
+              <Link to="/history"      className="btn btn-secondary justify-start w-full"><FileText className="w-4 h-4" /> Task History</Link>
+              <Link to="/leaderboard"  className="btn btn-secondary justify-start w-full"><Trophy className="w-4 h-4" /> Leaderboard</Link>
             </div>
           </div>
         </div>
 
         {/* Main panel */}
-        <div>
-          <div className="tabs" style={{ marginBottom:20 }}>
-            <button className={`tab-btn ${tab==='edit'?'active':''}`}    onClick={() => setTab('edit')}>✏️ Edit Profile</button>
-            <button className={`tab-btn ${tab==='history'?'active':''}`} onClick={() => setTab('history')}>📜 Recent Activity</button>
+        <div className="lg:col-span-2">
+          <div className="flex gap-2 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl w-fit mb-8">
+            <button className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${tab==='edit'?'bg-white dark:bg-white/10 text-primary-500 shadow-sm':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('edit')}><Edit3 className="w-4 h-4" /> Edit Profile</button>
+            <button className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${tab==='history'?'bg-white dark:bg-white/10 text-primary-500 shadow-sm':'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('history')}><HistoryIcon className="w-4 h-4" /> Recent Activity</button>
           </div>
 
           {tab === 'edit' && (
-            <div className="card">
-              <h3 style={{ marginBottom:20 }}>Edit Profile</h3>
+            <div className="card animate-slide-up">
+              <h3 className="text-xl font-bold mb-6">Edit Profile Details</h3>
               <form onSubmit={handleSave}>
                 <div className="form-group">
-                  <label htmlFor="profile-name">Full Name</label>
-                  <input id="profile-name" className="form-control" value={form.full_name}
+                  <label className="form-label" htmlFor="profile-name">Full Name</label>
+                  <input id="profile-name" className="form-input" value={form.full_name}
                     onChange={e => setForm({ ...form, full_name: e.target.value })} />
                 </div>
 
                 <div className="form-group">
-                  <label>Skills (click to toggle)</label>
-                  <div className="flex gap-2" style={{ flexWrap:'wrap' }}>
-                    {SKILL_OPTIONS.map(s => (
-                      <button key={s} type="button" onClick={() => toggleItem('skills', s)} className="skill-tag"
-                        style={{ cursor:'pointer', background: form.skills.includes(s)?'rgba(139,92,246,0.25)':'rgba(139,92,246,0.06)', border: form.skills.includes(s)?'1px solid rgba(139,92,246,0.5)':'1px solid rgba(139,92,246,0.15)', fontSize:'0.78rem', padding:'5px 12px' }}>
-                        {form.skills.includes(s) ? '✓ ' : ''}{s.replace('_',' ')}
-                      </button>
-                    ))}
+                  <label className="form-label">Skills</label>
+                  <div className="flex flex-wrap gap-2">
+                    {SKILL_OPTIONS.map(s => {
+                      const active = form.skills.includes(s);
+                      return (
+                        <button key={s} type="button" onClick={() => toggleItem('skills', s)} 
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${active ? 'bg-violet-500/20 border-violet-500/50 text-violet-700 dark:text-violet-300' : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'}`}>
+                          {active && '✓ '}{s.replace('_',' ')}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label>Interests (click to toggle)</label>
-                  <div className="flex gap-2" style={{ flexWrap:'wrap' }}>
-                    {INTEREST_OPTIONS.map(i => (
-                      <button key={i} type="button" onClick={() => toggleItem('interests', i)} className="skill-tag"
-                        style={{ cursor:'pointer', background: form.interests.includes(i)?'rgba(6,182,212,0.25)':'rgba(6,182,212,0.06)', border: form.interests.includes(i)?'1px solid rgba(6,182,212,0.5)':'1px solid rgba(6,182,212,0.15)', color:'var(--accent-1)', fontSize:'0.78rem', padding:'5px 12px' }}>
-                        {form.interests.includes(i) ? '✓ ' : ''}{i.replace('_',' ')}
-                      </button>
-                    ))}
+                  <label className="form-label">Interests</label>
+                  <div className="flex flex-wrap gap-2">
+                    {INTEREST_OPTIONS.map(i => {
+                      const active = form.interests.includes(i);
+                      return (
+                        <button key={i} type="button" onClick={() => toggleItem('interests', i)} 
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${active ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-700 dark:text-cyan-300' : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'}`}>
+                          {active && '✓ '}{i.replace('_',' ')}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="profile-location">Location</label>
-                  <input id="profile-location" className="form-control" value={form.location_name}
+                  <label className="form-label" htmlFor="profile-location">Location</label>
+                  <input id="profile-location" className="form-input" value={form.location_name}
                     onChange={e => setForm({ ...form, location_name: e.target.value })} placeholder="e.g. Mumbai" />
                 </div>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
-                  <div className="form-group">
-                    <label htmlFor="profile-lat">Latitude</label>
-                    <input id="profile-lat" className="form-control" type="number" step="any" value={form.latitude}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                  <div className="form-group !mb-0">
+                    <label className="form-label" htmlFor="profile-lat">Latitude</label>
+                    <input id="profile-lat" className="form-input" type="number" step="any" value={form.latitude}
                       onChange={e => setForm({ ...form, latitude: e.target.value })} placeholder="19.076" />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="profile-lng">Longitude</label>
-                    <input id="profile-lng" className="form-control" type="number" step="any" value={form.longitude}
+                  <div className="form-group !mb-0">
+                    <label className="form-label" htmlFor="profile-lng">Longitude</label>
+                    <input id="profile-lng" className="form-input" type="number" step="any" value={form.longitude}
                       onChange={e => setForm({ ...form, longitude: e.target.value })} placeholder="72.877" />
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 mt-4">
-                  <button type="submit" className="btn btn-primary" disabled={saving}>
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100 dark:border-white/10">
+                  <button type="submit" className="btn btn-primary w-full sm:w-auto" disabled={saving}>
                     {saving ? 'Saving…' : 'Save Changes'}
                   </button>
-                  {saved && <span style={{ color:'var(--accent-4)', fontSize:'0.85rem', fontWeight:500 }}>✅ Profile updated!</span>}
+                  {saved && <div className="text-emerald-500 font-bold text-sm bg-emerald-500/10 px-4 py-2 rounded-lg animate-fade-in flex items-center gap-2"><CheckCircle2 className="w-4 h-4" /> Profile updated successfully!</div>}
                 </div>
               </form>
             </div>
           )}
 
           {tab === 'history' && (
-            <div className="card">
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
-                <h3>Recent Activity</h3>
-                <Link to="/history" className="btn btn-secondary btn-sm">View All →</Link>
+            <div className="card animate-slide-up">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-xl font-bold">Recent Activity</h3>
+                <Link to="/history" className="text-sm font-bold text-primary-500 hover:underline">View All →</Link>
               </div>
               {history.length === 0 ? (
-                <div className="empty-state"><div className="empty-icon">📜</div><h3>No history yet</h3></div>
+                <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed border-slate-200 dark:border-white/10 rounded-xl">
+                  <FileText className="w-16 h-16 mb-4 text-slate-300 dark:text-slate-700" />
+                  <h3 className="text-lg font-bold text-slate-400">No history yet</h3>
+                </div>
               ) : (
-                <table className="data-table">
-                  <thead><tr><th>Task</th><th>Status</th><th>Match</th><th>Date</th></tr></thead>
-                  <tbody>
-                    {history.slice(0,8).map(h => (
-                      <tr key={h.id}>
-                        <td><Link to={`/tasks/${h.task_id}`}>Task #{h.task_id}</Link></td>
-                        <td><span className={`badge badge-${h.status==='completed'?'emerald':h.status==='no_show'?'danger':h.status==='assigned'?'cyan':'violet'}`}>{h.status}</span></td>
-                        <td>{h.match_score ? `${h.match_score.toFixed(0)}%` : '—'}</td>
-                        <td style={{ color:'var(--text-muted)', fontSize:'0.8rem' }}>{h.applied_at ? new Date(h.applied_at).toLocaleDateString() : '—'}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="data-table-container">
+                  <table className="data-table">
+                    <thead><tr><th>Task</th><th>Status</th><th>Match</th><th>Date</th></tr></thead>
+                    <tbody>
+                      {history.slice(0,8).map(h => (
+                        <tr key={h.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                          <td className="font-bold text-slate-900 dark:text-white">
+                            <Link to={`/tasks/${h.task_id}`} className="hover:text-primary-500 transition-colors">Task #{h.task_id}</Link>
+                          </td>
+                          <td><span className={`badge badge-${h.status==='completed'?'emerald':h.status==='no_show'?'danger':h.status==='assigned'?'cyan':'violet'}`}>{h.status}</span></td>
+                          <td className="font-medium">{h.match_score ? `${h.match_score.toFixed(0)}%` : '—'}</td>
+                          <td className="text-sm text-slate-400">{h.applied_at ? new Date(h.applied_at).toLocaleDateString() : '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           )}

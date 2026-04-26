@@ -7,6 +7,7 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import GoogleMap from '../components/GoogleMap';
 import StatusIndicator from '../components/StatusIndicator';
 import TaskTracking from '../components/TaskTracking';
+import { MapPin, BrainCircuit, Users, Map, Calendar, Trash2, ChevronLeft, Info } from 'lucide-react';
 
 
 export default function TaskDetail() {
@@ -101,25 +102,25 @@ export default function TaskDetail() {
     <div className="main-content pt-24 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div className="animate-slide-up">
-          <Link to="/dashboard" className="text-xs font-bold text-primary-500 hover:underline flex items-center gap-2 mb-4 uppercase tracking-widest">
-            ← Back to Dashboard
+          <Link to="/dashboard" className="text-xs font-bold text-primary-500 hover:underline flex items-center gap-1 mb-4 uppercase tracking-widest">
+            <ChevronLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">{task.title}</h1>
           <div className="flex flex-wrap items-center gap-3">
             <span className={`urgency-tag urgency-${task.urgency}`}>{task.urgency}</span>
             <span className={`badge ${task.status==='completed'?'badge-emerald':task.status==='open'?'badge-cyan':'badge-amber'}`}>{task.status.toUpperCase()}</span>
-            <span className="text-sm font-bold text-slate-400">📍 {task.location_name||'Remote'}</span>
+            <span className="text-sm font-bold text-slate-400 flex items-center gap-1"><MapPin className="w-4 h-4" /> {task.location_name||'Remote'}</span>
           </div>
         </div>
       </div>
 
       <div className="flex gap-2 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl w-fit mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        <TabButton active={tab==='details'} onClick={()=>setTab('details')} label="Details" />
+        <TabButton active={tab==='details'} onClick={()=>setTab('details')} label={<><Info className="w-4 h-4" /> Details</>} />
         {user.role==='organizer' && (
-          <TabButton active={tab==='matches'} onClick={()=>setTab('matches')} label={`🧠 AI Matches (${matches.length})`} />
+          <TabButton active={tab==='matches'} onClick={()=>setTab('matches')} label={<><BrainCircuit className="w-4 h-4" /> AI Matches ({matches.length})</>} />
         )}
-        <TabButton active={tab==='participants'} onClick={()=>setTab('participants')} label={`Participants (${participants.length})`} />
-        {task.latitude && <TabButton active={tab==='map'} onClick={()=>setTab('map')} label="🗺️ Map View" />}
+        <TabButton active={tab==='participants'} onClick={()=>setTab('participants')} label={<><Users className="w-4 h-4" /> Participants ({participants.length})</>} />
+        {task.latitude && <TabButton active={tab==='map'} onClick={()=>setTab('map')} label={<><Map className="w-4 h-4" /> Map View</>} />}
       </div>
 
       <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
@@ -141,7 +142,7 @@ export default function TaskDetail() {
                     <h3 className="text-xl font-bold mt-10 mb-6">Schedule</h3>
                     <div className="p-6 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10">
                       <div className="flex items-start gap-4">
-                        <span className="text-2xl">🗓️</span>
+                        <Calendar className="w-8 h-8 text-slate-400" />
                         <div>
                           <div className="text-sm font-bold text-slate-900 dark:text-white">Time Window</div>
                           <p className="text-xs font-medium text-slate-500 mt-1">
@@ -203,7 +204,7 @@ export default function TaskDetail() {
                     <button className="btn btn-secondary !text-red-500 hover:!bg-red-500/10 w-full py-4" onClick={() => setWithdrawConfirm(true)}>Withdraw</button>
                   )}
                   {user.role==='organizer' && (
-                    <button className="btn btn-danger w-full py-4" onClick={() => setDeleteConfirm(true)}>🗑️ Cancel Task</button>
+                    <button className="btn btn-danger w-full py-4" onClick={() => setDeleteConfirm(true)}><Trash2 className="w-4 h-4" /> Cancel Task</button>
                   )}
                 </div>
               </div>
@@ -214,10 +215,10 @@ export default function TaskDetail() {
         {tab === 'matches' && user.role==='organizer' && (
           <div className="card">
             <div className="flex items-center justify-between mb-10">
-              <h3 className="text-xl font-bold">🧠 AI-Ranked Volunteers</h3>
+              <h3 className="text-xl font-bold flex items-center gap-2"><BrainCircuit className="w-6 h-6 text-primary-500" /> AI-Ranked Volunteers</h3>
               <button className="btn btn-primary !bg-emerald-500 !shadow-emerald-500/20 !px-4 !py-2 !text-xs" onClick={handleAutoAssign}>⚡ Auto-Assign Top</button>
             </div>
-            {matches.length===0 ? <EmptyState icon="🧠" title="No matches found" text="We couldn't find suitable volunteers for this task yet." /> : (
+            {matches.length===0 ? <EmptyState icon={<BrainCircuit className="w-16 h-16" />} title="No matches found" text="We couldn't find suitable volunteers for this task yet." /> : (
               <div className="data-table-container">
                 <table className="data-table">
                   <thead>
@@ -256,8 +257,8 @@ export default function TaskDetail() {
 
         {tab === 'participants' && (
           <div className="card">
-            <h3 className="text-xl font-bold mb-10">Task Participants</h3>
-            {participants.length===0 ? <EmptyState icon="👥" title="No participants yet" text="Wait for volunteers to apply or start assigning them!" /> : (
+            <h3 className="text-xl font-bold mb-10 flex items-center gap-2"><Users className="w-6 h-6 text-primary-500" /> Task Participants</h3>
+            {participants.length===0 ? <EmptyState icon={<Users className="w-16 h-16" />} title="No participants yet" text="Wait for volunteers to apply or start assigning them!" /> : (
               <div className="data-table-container">
                 <table className="data-table">
                   <thead>
@@ -294,7 +295,7 @@ export default function TaskDetail() {
         {tab === 'map' && task.latitude && (
           <div className="card overflow-hidden !p-0">
             <div className="p-8 border-b border-slate-100 dark:border-white/5">
-              <h3 className="text-xl font-bold">🗺️ Task Location</h3>
+              <h3 className="text-xl font-bold flex items-center gap-2"><Map className="w-6 h-6 text-primary-500" /> Task Location</h3>
             </div>
             <GoogleMap tasks={[task]} center={{ lat: task.latitude, lng: task.longitude }} zoom={14} height="500px" />
           </div>
@@ -331,7 +332,7 @@ export default function TaskDetail() {
 function TabButton({ active, onClick, label }) {
   return (
     <button 
-      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+      className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
         active 
           ? 'bg-white dark:bg-white/10 text-primary-500 shadow-sm' 
           : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -346,7 +347,7 @@ function TabButton({ active, onClick, label }) {
 function EmptyState({ icon, title, text }) {
   return (
     <div className="flex flex-col items-center justify-center py-20 px-6 card border-dashed">
-      <div className="text-5xl mb-4 grayscale opacity-20">{icon}</div>
+      <div className="mb-4 text-slate-300 dark:text-slate-700">{icon}</div>
       <h3 className="text-lg font-bold text-slate-400 mb-1">{title}</h3>
       <p className="text-sm text-slate-400 text-center max-w-xs">{text}</p>
     </div>
