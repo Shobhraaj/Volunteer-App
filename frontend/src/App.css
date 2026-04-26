@@ -1,6 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-secondary-100: #f1f5f9;
+  --color-secondary-200: #e2e8f0;
+  --color-secondary-300: #cbd5e1;
+  --color-secondary-400: #94a3b8;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+
+
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
 
 /* 
    AI Volunteer Platform — Premium Design System
@@ -102,123 +119,115 @@ a:hover {
 
 /* ── Apple Interactions ───────────────────────────────────────────── */
 /* ── Premium Utilities ────────────────────────────────────────────── */
-.glass-card {
-  @apply bg-opacity-70 backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300;
+@utility glass-card {
+  @apply backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300;
   background-color: var(--bg-card);
 }
 
-.apple-hover {
+@utility apple-hover {
   @apply hover:scale-[1.02] hover:-translate-y-1 hover:shadow-premium active:scale-[0.98];
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.5s ease-out forwards;
-}
-
 /* ── Component Styles ────────────────────────────────────────────── */
-.btn {
+@utility btn {
   @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
-.btn-primary {
+@utility btn-primary {
   @apply bg-primary-500 text-white shadow-lg shadow-primary-500/25 hover:bg-primary-600 hover:shadow-primary-500/40;
 }
 
-.btn-secondary {
+@utility btn-secondary {
   @apply bg-secondary-200 text-secondary-800 hover:bg-secondary-300 dark:bg-secondary-800 dark:text-secondary-100 dark:hover:bg-secondary-700;
 }
 
-.btn-danger {
+@utility btn-danger {
   @apply bg-red-500 text-white shadow-lg shadow-red-500/25 hover:bg-red-600 hover:shadow-red-500/40;
 }
 
-.card {
-  @apply glass-card p-6 shadow-sm hover:shadow-md;
+@utility card {
+  @apply backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300 p-6 shadow-sm hover:shadow-md;
+  background-color: var(--bg-card);
 }
 
-.stat-card {
-  @apply card flex flex-col gap-1;
+@utility stat-card {
+  @apply backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300 p-6 shadow-sm hover:shadow-md flex flex-col gap-1;
+  background-color: var(--bg-card);
 }
 
-.stat-icon {
+@utility stat-icon {
   @apply w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-2;
 }
+
+
+@utility animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@utility animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
 .stat-icon.emerald { @apply bg-emerald-500/20 text-emerald-500; }
 .stat-icon.amber   { @apply bg-amber-500/20 text-amber-500; }
 .stat-icon.violet  { @apply bg-violet-500/20 text-violet-500; }
 .stat-icon.cyan    { @apply bg-cyan-500/20 text-cyan-500; }
 
-.stat-value { @apply text-2xl font-bold text-slate-900 dark:text-white; }
-.stat-label { @apply text-sm text-slate-500 dark:text-slate-400 font-medium; }
+@utility stat-value { @apply text-2xl font-bold text-slate-900 dark:text-white; }
+@utility stat-label { @apply text-sm text-slate-500 dark:text-slate-400 font-medium; }
 
 /* ── Tables ───────────────────────────────────────────────────────── */
-.data-table-container {
+@utility data-table-container {
   @apply overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800;
 }
 
-.data-table {
+@utility data-table {
   @apply w-full text-left border-collapse;
 }
 
-.data-table th {
-  @apply px-6 py-4 bg-slate-50 dark:bg-slate-900/50 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800;
-}
-
-.data-table td {
-  @apply px-6 py-4 text-sm text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-800;
-}
-
-.data-table tr:hover td {
-  @apply bg-slate-50/50 dark:bg-white/5;
-}
-
 /* ── Badges ───────────────────────────────────────────────────────── */
-.badge {
+@utility badge {
   @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
 }
-.badge-emerald { @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400; }
-.badge-cyan    { @apply bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400; }
-.badge-violet  { @apply bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400; }
-.badge-danger  { @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400; }
+
+@utility badge-emerald { @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400; }
+@utility badge-cyan    { @apply bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400; }
+@utility badge-violet  { @apply bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400; }
+@utility badge-danger  { @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400; }
 
 /* ── Dashboard Specific ───────────────────────────────────────────── */
-.stats-grid {
+@utility stats-grid {
   @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
 }
 
-.task-grid {
+@utility task-grid {
   @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
 }
 
-.rec-card {
-  @apply card flex gap-6 items-start mb-4 relative overflow-hidden;
+@utility rec-card {
+  @apply backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300 p-6 shadow-sm hover:shadow-md flex gap-6 items-start mb-4 relative overflow-hidden;
+  background-color: var(--bg-card);
 }
 
-.rec-score {
+
+@utility rec-score {
   @apply absolute top-0 right-0 p-4 bg-primary-500/10 text-primary-500 font-bold text-lg rounded-bl-2xl;
 }
 
-.skill-tag {
+@utility skill-tag {
   @apply inline-block px-3 py-1 bg-secondary-100 dark:bg-secondary-800 text-secondary-600 dark:text-secondary-400 text-xs font-bold rounded-lg mr-2 mb-2;
 }
 
-.urgency-tag {
+@utility urgency-tag {
   @apply px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest;
 }
-.urgency-high { @apply bg-red-500 text-white; }
-.urgency-medium { @apply bg-amber-500 text-white; }
-.urgency-low { @apply bg-emerald-500 text-white; }
 
-/* ── Forms ────────────────────────────────────────────────────────── */
-.form-group { @apply mb-6; }
-.form-label { @apply block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2; }
-.form-input {
+@utility form-group { @apply mb-6; }
+@utility form-label { @apply block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2; }
+@utility form-input {
   @apply w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all outline-none text-slate-900 dark:text-white;
 }
+
 
 /* ── Animations ───────────────────────────────────────────────────── */
 @keyframes fadeIn {
