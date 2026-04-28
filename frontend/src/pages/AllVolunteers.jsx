@@ -5,6 +5,7 @@ import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
 import ScrollReveal from '../components/ScrollReveal';
 import StatusIndicator from '../components/StatusIndicator';
+import { Search } from 'lucide-react';
 
 export default function AllVolunteers() {
   const [volunteers, setVolunteers] = useState([]);
@@ -16,8 +17,7 @@ export default function AllVolunteers() {
     loadVolunteers();
 
     // Real-time listener for user status/presence
-    const unsub = onSnapshot(collection(db, 'users'), (snapshot) => {
-      // In a real app, we'd update specific users, but for now we refresh
+    const unsub = onSnapshot(collection(db, 'users'), () => {
       loadVolunteers();
     });
 
@@ -44,122 +44,127 @@ export default function AllVolunteers() {
 
   const skills = ['All Skills', 'Teaching', 'Medical', 'Environment', 'Support', 'Legal', 'Tech'];
 
-  if (loading) return <div className="main-content"><div className="skeleton" style={{ height: 400 }} /></div>;
+  if (loading) {
+    return (
+      <div className="main-content py-8 px-4 md:px-8">
+        <div className="skeleton" style={{ height: 400 }} />
+      </div>
+    );
+  }
 
   return (
-    <div className="main-content fade-in">
-      <ScrollReveal>
-        <div className="page-header flex justify-between items-end">
-          <div>
-            <h1>Volunteer Directory</h1>
-            <p>Browse and manage all registered volunteers across the platform.</p>
-          </div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 8 }}>
-            Total: <strong>{volunteers.length}</strong> | Filtered: <strong>{filtered.length}</strong>
-          </div>
+    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
+      <div className="page-header flex flex-col md:flex-row md:justify-between md:items-end">
+        <div>
+          <h1>Volunteer Directory</h1>
+          <p>Browse and manage all registered volunteers across the platform.</p>
         </div>
-      </ScrollReveal>
+        <div className="text-sm font-bold text-slate-400 mb-2">
+          Total: <span className="text-slate-900 dark:text-white">{volunteers.length}</span>
+          {' · '}
+          Filtered: <span className="text-slate-900 dark:text-white">{filtered.length}</span>
+        </div>
+      </div>
 
-      {/* Advanced Search & Filter Bar */}
-      <ScrollReveal delay={0.1}>
-        <div className="card glass-card mb-8">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 200px 200px', gap: '16px' }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4, display: 'block' }}>Search Name</label>
-              <input 
-                type="text" 
-                placeholder="Search by name..." 
-                className="form-control"
+      {/* Search & Filter Bar */}
+      <div className="card mb-8 animate-slide-up">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="form-group !mb-0">
+            <label className="form-label">Search Name</label>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search by name..."
+                className="form-input !pl-10"
                 value={filter.query}
                 onChange={(e) => setFilter({ ...filter, query: e.target.value })}
               />
-            </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4, display: 'block' }}>Primary Skill</label>
-              <select 
-                className="form-control"
-                value={filter.skill}
-                onChange={(e) => setFilter({ ...filter, skill: e.target.value.toLowerCase() })}
-              >
-                {skills.map(s => <option key={s} value={s.toLowerCase()}>{s}</option>)}
-              </select>
-            </div>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 4, display: 'block' }}>Performance</label>
-              <select 
-                className="form-control"
-                value={filter.status}
-                onChange={(e) => setFilter({ ...filter, status: e.target.value })}
-              >
-                <option value="all">All Performance</option>
-                <option value="high">Top Rated (90%+)</option>
-              </select>
+              <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             </div>
           </div>
+          <div className="form-group !mb-0">
+            <label className="form-label">Primary Skill</label>
+            <select
+              className="form-input"
+              value={filter.skill}
+              onChange={(e) => setFilter({ ...filter, skill: e.target.value.toLowerCase() })}
+            >
+              {skills.map(s => <option key={s} value={s.toLowerCase()}>{s}</option>)}
+            </select>
+          </div>
+          <div className="form-group !mb-0">
+            <label className="form-label">Performance</label>
+            <select
+              className="form-input"
+              value={filter.status}
+              onChange={(e) => setFilter({ ...filter, status: e.target.value })}
+            >
+              <option value="all">All Performance</option>
+              <option value="high">Top Rated (90%+)</option>
+            </select>
+          </div>
         </div>
-      </ScrollReveal>
+      </div>
 
-      <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+      {/* Volunteer Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((v, i) => (
           <ScrollReveal key={v.id} delay={0.05 * (i % 10)}>
-            <div className="card glass-card clickable-card apple-hover" style={{ padding: '24px' }}>
-              <div className="flex items-start justify-between mb-6">
+            <div className="card apple-hover flex flex-col h-full">
+              <div className="flex items-start justify-between mb-5">
                 <div className="flex items-center gap-4">
-                  <div 
-                    className="user-avatar micro-interaction" 
+                  <div
+                    className="user-avatar w-16 h-16 rounded-2xl text-2xl cursor-pointer hover:scale-105 transition-transform"
                     onClick={() => navigate('/profile')}
-                    style={{ 
-                      width: 64, height: 64, borderRadius: '20px',
-                      fontSize: '1.4rem', background: 'var(--gradient-primary)',
-                      cursor: 'pointer'
-                    }}
                   >
                     {v.full_name[0]}
                   </div>
                   <div>
-                    <h3 
-                      style={{ fontSize: '1.1rem', marginBottom: 4, cursor: 'pointer' }}
+                    <div
+                      className="font-bold text-slate-900 dark:text-white mb-1 cursor-pointer hover:text-primary-500 transition-colors"
                       onClick={() => navigate('/profile')}
-                      className="apple-hover"
                     >
                       {v.full_name}
-                    </h3>
+                    </div>
                     <div className="flex items-center gap-2">
                       <StatusIndicator userId={v.id} />
-                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                      <span className="text-xs font-medium text-slate-400">
                         {v.tasks_completed} tasks done
                       </span>
                     </div>
                   </div>
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '1.2rem', fontWeight: 900, color: 'var(--accent-primary)' }}>{v.points}</div>
-                  <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-muted)' }}>POINTS</div>
+                <div className="text-right shrink-0">
+                  <div className="text-xl font-black text-primary-500">{v.points}</div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Points</div>
                 </div>
               </div>
 
-              <div className="flex gap-2 mb-6" style={{ flexWrap: 'wrap' }}>
+              <div className="flex flex-wrap gap-2 mb-5">
                 {(v.badges || []).map(b => (
-                  <span key={b} className="skill-tag" style={{ fontSize: '0.7rem' }}>{b}</span>
+                  <span key={b} className="skill-tag !mr-0 !mb-0">{b}</span>
                 ))}
+                {(!v.badges || v.badges.length === 0) && (
+                  <span className="text-xs font-medium text-slate-400">No badges yet</span>
+                )}
               </div>
 
-              <div className="mt-4 pt-6" style={{ borderTop: '1px solid var(--border-glass)' }}>
-                <div className="flex justify-between items-center mb-2" style={{ fontSize: '0.8rem' }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Reliability Score</span>
-                  <span style={{ fontWeight: 700 }}>{v.reliability}%</span>
+              <div className="mt-auto pt-5 border-t border-slate-100 dark:border-white/5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-500">Reliability Score</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">{v.reliability}%</span>
                 </div>
                 <div className="progress-bar" style={{ height: 6 }}>
-                  <div 
-                    className="progress-fill" 
-                    style={{ 
-                      width: `${v.reliability}%`, 
-                      background: v.reliability > 85 ? 'var(--accent-primary)' : '#f59e0b' 
-                    }} 
+                  <div
+                    className="progress-fill"
+                    style={{
+                      width: `${v.reliability}%`,
+                      background: v.reliability > 85 ? 'var(--gradient-primary)' : '#f59e0b',
+                    }}
                   />
                 </div>
-                <button 
-                  className="btn btn-secondary btn-sm w-full mt-6 apple-hover micro-interaction"
+                <button
+                  className="btn btn-secondary btn-sm w-full mt-4"
                   onClick={() => navigate('/profile')}
                 >
                   View Performance Profile
@@ -171,8 +176,8 @@ export default function AllVolunteers() {
       </div>
 
       {filtered.length === 0 && (
-        <div className="empty-state">
-          <div style={{ fontSize: '3rem', marginBottom: 16 }}>🔍</div>
+        <div className="empty-state mt-8">
+          <div className="empty-icon">🔍</div>
           <h3>No matches found</h3>
           <p>Try adjusting your search or filters to find more volunteers.</p>
         </div>

@@ -28,11 +28,12 @@ export default function AdminDashboard() {
     loadInitialData();
 
     // Real-time Firestore listeners for tasks
-    const tasksUnsub = onSnapshot(collection(db, 'task_tracking'), (snapshot) => {
-      // When tracking updates, we might want to refresh the local state
-      // but for simplicity, we'll just reload the main data or handle it incrementally
-      loadInitialData();
-    });
+    let tasksUnsub = () => {};
+    if (db) {
+      tasksUnsub = onSnapshot(collection(db, 'task_tracking'), (snapshot) => {
+        loadInitialData();
+      });
+    }
 
     return () => tasksUnsub();
   }, []);
@@ -112,7 +113,7 @@ export default function AdminDashboard() {
   if (loading) return <div className="main-content"><div className="skeleton" style={{ height: 400 }} /></div>;
 
   return (
-    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
+    <div className="main-content animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div className="animate-slide-up">
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">Admin Control Panel</h1>

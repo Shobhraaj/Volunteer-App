@@ -99,7 +99,7 @@ export default function TaskDetail() {
   };
 
   return (
-    <div className="main-content pt-24 animate-fade-in">
+    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div className="animate-slide-up">
           <Link to="/dashboard" className="text-xs font-bold text-primary-500 hover:underline flex items-center gap-1 mb-4 uppercase tracking-widest">

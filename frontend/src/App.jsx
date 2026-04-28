@@ -17,11 +17,26 @@ import ParticleBackground from './components/ParticleBackground';
 import AdminDashboard from './pages/AdminDashboard';
 import AllVolunteers from './pages/AllVolunteers';
 
+import { Outlet } from 'react-router-dom';
+
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="main-content"><div className="skeleton" style={{ height: 200 }} /></div>;
   if (!user) return <Navigate to="/login" replace />;
   return children;
+}
+
+function AuthenticatedLayout() {
+  return (
+    <ProtectedRoute>
+      <div className="layout-container">
+        <Navbar />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
+    </ProtectedRoute>
+  );
 }
 
 function AppRoutes() {
@@ -32,41 +47,16 @@ function AppRoutes() {
       <Route path="/login"    element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Navbar />
-          {user?.role === 'organizer' ? <AdminDashboard /> : <VolunteerDashboard />}
-        </ProtectedRoute>
-      } />
-
-      <Route path="/volunteers" element={
-        <ProtectedRoute><Navbar /><AllVolunteers /></ProtectedRoute>
-      } />
-
-
-      <Route path="/tasks/:id" element={
-        <ProtectedRoute><Navbar /><TaskDetail /></ProtectedRoute>
-      } />
-
-      <Route path="/profile" element={
-        <ProtectedRoute><Navbar /><Profile /></ProtectedRoute>
-      } />
-
-      <Route path="/analytics" element={
-        <ProtectedRoute><Navbar /><AnalyticsDashboard /></ProtectedRoute>
-      } />
-
-      <Route path="/leaderboard" element={
-        <ProtectedRoute><Navbar /><Leaderboard /></ProtectedRoute>
-      } />
-
-      <Route path="/history" element={
-        <ProtectedRoute><Navbar /><TaskHistory /></ProtectedRoute>
-      } />
-
-      <Route path="/certificates" element={
-        <ProtectedRoute><Navbar /><Certificates /></ProtectedRoute>
-      } />
+      <Route element={<AuthenticatedLayout />}>
+        <Route path="/dashboard" element={user?.role === 'organizer' ? <AdminDashboard /> : <VolunteerDashboard />} />
+        <Route path="/volunteers" element={<AllVolunteers />} />
+        <Route path="/tasks/:id" element={<TaskDetail />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/analytics" element={<AnalyticsDashboard />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/history" element={<TaskHistory />} />
+        <Route path="/certificates" element={<Certificates />} />
+      </Route>
 
       <Route path="/"  element={<Navigate to="/dashboard" replace />} />
       <Route path="*"  element={<Navigate to="/dashboard" replace />} />
