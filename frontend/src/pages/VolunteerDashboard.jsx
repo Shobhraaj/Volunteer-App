@@ -158,7 +158,7 @@ export default function VolunteerDashboard() {
       </div>
 
       {/* ── Stat Cards & Achievements ─────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
         <div className="lg:col-span-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <StatCard
@@ -238,15 +238,15 @@ export default function VolunteerDashboard() {
 
       {/* ── Tabs ───────────────────────────────────────────────────── */}
       <div
-        className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12 animate-slide-up"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-20 animate-slide-up"
         style={{ animationDelay: "0.3s" }}
       >
-        <div className="flex p-2 bg-slate-200/50 dark:bg-white/5 backdrop-blur-md rounded-[1.5rem] w-fit border border-slate-200/50 dark:border-white/10 shadow-sm">
+        <div className="flex gap-2 p-2 bg-slate-200/50 dark:bg-white/5 backdrop-blur-md rounded-[2rem] w-fit border border-slate-200/50 dark:border-white/10 shadow-sm">
           <TabButton
             active={tab === "recommended"}
             onClick={() => setTab("recommended")}
             label={
-              <span className="flex items-center gap-2.5 px-2">
+              <span className="flex items-center gap-3">
                 <BrainCircuit className="w-5 h-5" /> AI Recommended
               </span>
             }
@@ -255,7 +255,7 @@ export default function VolunteerDashboard() {
             active={tab === "all"}
             onClick={() => setTab("all")}
             label={
-              <span className="flex items-center gap-2.5 px-2">
+              <span className="flex items-center gap-3">
                 <List className="w-5 h-5" /> Browse All
               </span>
             }
@@ -264,7 +264,7 @@ export default function VolunteerDashboard() {
             active={tab === "history"}
             onClick={() => setTab("history")}
             label={
-              <span className="flex items-center gap-2.5 px-2">
+              <span className="flex items-center gap-3">
                 <FileText className="w-5 h-5" /> My History
               </span>
             }
@@ -628,7 +628,7 @@ export default function VolunteerDashboard() {
 function TabButton({ active, onClick, label }) {
   return (
     <button
-      className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+      className={`px-6 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
         active
           ? "bg-white dark:bg-white/10 text-primary-500 shadow-sm"
           : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
