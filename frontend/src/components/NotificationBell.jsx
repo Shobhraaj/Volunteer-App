@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNotifications } from '../hooks/useFirestore';
 import { useAuth } from '../context/AuthContext';
+import { Bell } from 'lucide-react';
 
 const TYPE_ICON = {
   task:     '📋',
@@ -58,10 +59,10 @@ export default function NotificationBell() {
       <button
         id="notification-bell-btn"
         onClick={handleOpen}
-        className="relative bg-transparent border-none cursor-pointer p-2 rounded-xl text-slate-500 dark:text-slate-400 text-xl transition-colors flex items-center hover:bg-slate-100 dark:hover:bg-slate-800"
+        className="relative bg-transparent border-none cursor-pointer p-2 rounded-xl text-slate-500 dark:text-slate-400 transition-colors flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 h-10 w-10 shadow-sm"
         title="Notifications"
       >
-        🔔
+        <Bell className="w-5 h-5" />
         {count > 0 && (
           <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center animate-pulse">
             {count > 9 ? '9+' : count}

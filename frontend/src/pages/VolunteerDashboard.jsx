@@ -88,77 +88,110 @@ export default function VolunteerDashboard() {
     <div className="main-content animate-fade-in">
 
       {/* ── Header ─────────────────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
         <div className="animate-slide-up">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-500/10 text-primary-600 dark:text-primary-400 text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
+            <span className="w-1.5 h-1.5 bg-primary-500 rounded-full animate-pulse" />
+            Volunteer Dashboard
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-3">
             Welcome back,{' '}
-            <span className="text-primary-500">{user?.full_name?.split(' ')[0]}</span> 👋
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-emerald-500">{user?.full_name?.split(' ')[0]}</span> 👋
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">
-            Here's your volunteer activity and AI-powered task recommendations
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-lg max-w-2xl leading-relaxed">
+            Here's your personal activity overview and AI-powered recommendations tailored to your skills.
           </p>
         </div>
 
         <div
-          className="flex items-center gap-4 p-4 glass-card shadow-sm animate-slide-up shrink-0"
+          className="flex items-center gap-6 p-1.5 pl-6 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm animate-slide-up shrink-0 h-fit mb-1"
           style={{ animationDelay: '0.1s' }}
         >
-          <div className="text-xs font-black uppercase tracking-widest text-slate-400">
-            Your Status
+          <div className="flex flex-col">
+            <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">
+              Current Status
+            </div>
+            <div className="text-sm font-bold text-slate-900 dark:text-white">Active Volunteer</div>
           </div>
+          <div className="h-10 w-px bg-slate-100 dark:bg-white/10" />
           <ActivityStatus userId={user?.id} />
         </div>
       </div>
 
-      {/* ── Stat Cards ─────────────────────────────────────────────── */}
-      <div className="stats-grid mb-10">
-        <StatCard icon={<Trophy className="w-6 h-6" />}     label="Total Points"      value={user?.points || 0}                                    color="amber"   />
-        <StatCard icon={<CheckCircle className="w-6 h-6" />} label="Tasks Completed"   value={completedCount}                                        color="emerald" />
-        <StatCard icon={<Award className="w-6 h-6" />}      label="Badges Earned"     value={badges.length}                                         color="violet"  />
-        <StatCard icon={<BarChart3 className="w-6 h-6" />}  label="Reliability Score" value={`${((user?.reliability_score || 0) * 100).toFixed(0)}%`} color="cyan"  />
-      </div>
-
-      {/* ── Badges ─────────────────────────────────────────────────── */}
-      {badges.length > 0 && (
-        <div className="card mb-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-center gap-3 mb-6">
-            <Award className="w-6 h-6 text-violet-500 shrink-0" />
-            <h3 className="text-lg font-bold">Your Achievements</h3>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {badges.map((b, i) => (
-              <div
-                key={i}
-                className="px-4 py-2 bg-violet-500/10 border border-violet-500/20 rounded-xl text-sm font-bold text-violet-600 dark:text-violet-400 flex items-center gap-2 apple-hover"
-              >
-                <span className="w-2 h-2 bg-violet-500 rounded-full animate-pulse-soft shrink-0" />
-                {b.badge_name}
-              </div>
-            ))}
+      {/* ── Stat Cards & Achievements ─────────────────────────────── */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-12">
+        <div className="xl:col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
+            <StatCard icon={<Trophy className="w-6 h-6" />}     label="Total Points"      value={user?.points || 0}                                    color="amber"   />
+            <StatCard icon={<CheckCircle className="w-6 h-6" />} label="Tasks Completed"   value={completedCount}                                        color="emerald" />
+            <StatCard icon={<Award className="w-6 h-6" />}      label="Badges Earned"     value={badges.length}                                         color="violet"  />
+            <StatCard icon={<BarChart3 className="w-6 h-6" />}  label="Reliability Score" value={`${((user?.reliability_score || 0) * 100).toFixed(0)}%`} color="cyan"  />
           </div>
         </div>
-      )}
+
+        <div className="card h-full flex flex-col animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Award className="w-6 h-6 text-violet-500 shrink-0" />
+              <h3 className="text-lg font-bold">Achievements</h3>
+            </div>
+            <span className="text-xs font-bold text-slate-400">{badges.length} total</span>
+          </div>
+          {badges.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {badges.slice(0, 6).map((b, i) => (
+                <div
+                  key={i}
+                  className="px-3 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-xl text-[11px] font-bold text-violet-600 dark:text-violet-400 flex items-center gap-2"
+                >
+                  <span className="w-1.5 h-1.5 bg-violet-500 rounded-full shrink-0" />
+                  {b.badge_name}
+                </div>
+              ))}
+              {badges.length > 6 && (
+                <div className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl text-[11px] font-bold text-slate-500">
+                  +{badges.length - 6} more
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-slate-400 text-sm italic py-4">
+              No badges earned yet
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* ── Tabs ───────────────────────────────────────────────────── */}
       <div
-        className="flex gap-1 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl w-fit mb-8 animate-slide-up"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 animate-slide-up"
         style={{ animationDelay: '0.3s' }}
       >
-        <TabButton
-          active={tab === 'recommended'}
-          onClick={() => setTab('recommended')}
-          label={<span className="flex items-center gap-2"><BrainCircuit className="w-4 h-4" /> AI Recommended</span>}
-        />
-        <TabButton
-          active={tab === 'all'}
-          onClick={() => setTab('all')}
-          label={<span className="flex items-center gap-2"><List className="w-4 h-4" /> All Open Tasks</span>}
-        />
-        <TabButton
-          active={tab === 'history'}
-          onClick={() => setTab('history')}
-          label={<span className="flex items-center gap-2"><FileText className="w-4 h-4" /> My History</span>}
-        />
+        <div className="flex p-1.5 bg-slate-200/50 dark:bg-white/5 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50 dark:border-white/5">
+          <TabButton
+            active={tab === 'recommended'}
+            onClick={() => setTab('recommended')}
+            label={<span className="flex items-center gap-2"><BrainCircuit className="w-4 h-4" /> AI Recommended</span>}
+          />
+          <TabButton
+            active={tab === 'all'}
+            onClick={() => setTab('all')}
+            label={<span className="flex items-center gap-2"><List className="w-4 h-4" /> Browse All</span>}
+          />
+          <TabButton
+            active={tab === 'history'}
+            onClick={() => setTab('history')}
+            label={<span className="flex items-center gap-2"><FileText className="w-4 h-4" /> My History</span>}
+          />
+        </div>
+
+        <div className="flex items-center gap-3 px-4 py-2 bg-white dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/5 shadow-sm">
+          <div className="relative">
+            <span className="absolute inset-0 bg-primary-500 rounded-full animate-ping opacity-20" />
+            <div className="relative w-2 h-2 bg-primary-500 rounded-full" />
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Live Task Feed</span>
+        </div>
       </div>
 
       {/* ── Tab Panels ─────────────────────────────────────────────── */}
@@ -177,45 +210,54 @@ export default function VolunteerDashboard() {
               const participation = appliedMap[rec.task.id];
               return (
                 <div
-                  className="rec-card apple-hover group cursor-pointer"
+                  className="rec-card apple-hover group cursor-pointer !flex-row !items-center !gap-8 !p-8"
                   key={rec.task.id}
                   onClick={() => navigate(`/tasks/${rec.task.id}`)}
                 >
-                  {/* Score badge */}
-                  <div className="rec-score group-hover:bg-primary-500 group-hover:text-white transition-colors shrink-0">
-                    {rec.relevance_score.toFixed(0)}%
+                  {/* Left: Score Circle */}
+                  <div className="relative w-20 h-20 shrink-0 hidden md:flex items-center justify-center">
+                    <svg className="w-full h-full -rotate-90">
+                      <circle cx="40" cy="40" r="36" fill="transparent" stroke="currentColor" strokeWidth="6" className="text-slate-100 dark:text-white/5" />
+                      <circle cx="40" cy="40" r="36" fill="transparent" stroke="currentColor" strokeWidth="6" strokeDasharray={226} strokeDashoffset={226 - (226 * rec.relevance_score) / 100} className="text-primary-500 transition-all duration-1000" strokeLinecap="round" />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-xl font-black text-slate-900 dark:text-white leading-none">{rec.relevance_score.toFixed(0)}</span>
+                      <span className="text-[8px] font-black uppercase tracking-tighter text-slate-400">Match</span>
+                    </div>
                   </div>
 
                   {/* Main content */}
                   <div className="flex-1 min-w-0">
-                    <div className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors mb-2 truncate">
-                      {rec.task.title}
-                    </div>
-
-                    <div className="flex items-center flex-wrap gap-3 mb-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {rec.task.location_name || 'Remote'}
-                      </span>
-                      <span className={`urgency-tag urgency-${rec.task.urgency}`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors truncate">
+                        {rec.task.title}
+                      </div>
+                      <span className={`urgency-tag urgency-${rec.task.urgency} !mb-0`}>
                         {rec.task.urgency}
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5 mb-4">
+                    <div className="flex items-center gap-4 mb-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      <span className="flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 text-primary-500" />
+                        {rec.task.location_name || 'Remote'}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Trophy className="w-3 h-3 text-amber-500" />
+                        {rec.task.points || 50} pts
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {(rec.task.required_skills || []).map(s => (
-                        <span key={s} className="skill-tag">{s}</span>
+                        <span key={s} className="skill-tag !mb-0">{s}</span>
                       ))}
                     </div>
 
-                    <ul className="space-y-1.5">
-                      {rec.reasons.map((r, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-slate-500 dark:text-slate-400">
-                          <span className="text-primary-500 mt-0.5 shrink-0">✦</span>
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="flex items-center gap-2 text-xs font-bold text-primary-500">
+                      <BrainCircuit className="w-3.5 h-3.5" />
+                      {rec.reasons[0]}
+                    </div>
                   </div>
 
                   {/* Action */}

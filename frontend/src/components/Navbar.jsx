@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Home, History as HistoryIcon, Trophy, Settings, Users, BarChart3, Sun, Moon, Leaf, Shield } from 'lucide-react';
+import { Home, History as HistoryIcon, Trophy, Settings, Users, BarChart3, Sun, Moon, Leaf, Shield, Bell } from 'lucide-react';
 import NotificationBell from './NotificationBell';
 import ActivityStatus from './ActivityStatus';
 
@@ -34,15 +34,17 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 z-[60] transition-all duration-300 shadow-sm">
-      <div className="max-w-7xl mx-auto w-full h-20 flex items-center justify-between px-4 md:px-8">
-        <Link to="/dashboard" className="flex items-center gap-3 transition-transform hover:-translate-y-0.5 group">
+      <div className="w-full h-20 flex items-center justify-between px-6 md:px-12">
+        {/* Left: Logo */}
+        <Link to="/dashboard" className="flex items-center gap-3 transition-transform hover:-translate-y-0.5 group shrink-0">
           <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center text-white shadow-md group-hover:bg-primary-600 transition-colors">
             <Shield className="w-5 h-5" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">VolunteerAI</span>
+          <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">VolunteerAI</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-white/5 p-1 rounded-2xl">
+        {/* Center: Main Nav */}
+        <div className="hidden md:flex items-center gap-2 bg-slate-100/50 dark:bg-white/5 p-1 rounded-2xl mx-4 shadow-inner">
           {user?.role === 'volunteer' && (
             <>
               <NavLink to="/dashboard" label="Dashboard" icon={<Home className="w-4 h-4" />} active={isActive('/dashboard')} />
@@ -60,15 +62,15 @@ export default function Navbar() {
           )}
         </div>
 
-
-        <div className="flex items-center gap-4">
+        {/* Right: Actions */}
+        <div className="flex items-center gap-3 lg:gap-4 shrink-0">
           <button 
-            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/50 dark:bg-white/5 border border-white/20 hover:bg-white dark:hover:bg-white/10 transition-all active:scale-95" 
+            className="flex items-center gap-2 h-10 px-3 rounded-xl bg-white/50 dark:bg-white/5 border border-white/20 hover:bg-white dark:hover:bg-white/10 transition-all active:scale-95 shadow-sm" 
             onClick={toggleTheme}
             title={`Switch Theme (Current: ${themeLabel})`}
           >
-            <span className="text-current">{themeIcon}</span>
-            <span className="hidden lg:inline text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">{themeLabel}</span>
+            <span className="text-current flex items-center justify-center">{themeIcon}</span>
+            <span className="hidden lg:inline text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 leading-none">{themeLabel}</span>
           </button>
 
           <NotificationBell />
@@ -77,14 +79,14 @@ export default function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group"
+              className="flex items-center gap-3 p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group h-12"
             >
-              <div className="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:shadow-lg transition-all">
+              <div className="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:shadow-lg transition-all shrink-0">
                 {initials}
               </div>
-              <div className="hidden lg:block text-left pr-2">
-                <div className="text-sm font-bold text-slate-900 dark:text-white leading-none mb-1">{user?.full_name}</div>
-                <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <div className="hidden lg:flex flex-col justify-center text-left pr-2">
+                <div className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{user?.full_name}</div>
+                <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-none mt-0.5">
                   {user?.role}
                 </div>
               </div>
@@ -118,13 +120,13 @@ function NavLink({ to, label, icon, active }) {
   return (
     <Link 
       to={to} 
-      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
+      className={`flex items-center gap-2.5 h-10 px-5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
         active 
-          ? 'bg-primary-500 text-white shadow-md' 
-          : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+          ? 'bg-primary-500 !text-white shadow-lg shadow-primary-500/20' 
+          : 'text-slate-500 dark:text-slate-400 hover:!text-slate-900 dark:hover:!text-white hover:bg-slate-100 dark:hover:bg-slate-800'
       }`}
     >
-      <span className="text-current flex items-center justify-center">{icon}</span>
+      <span className="flex items-center justify-center">{icon}</span>
       <span>{label}</span>
     </Link>
   );
