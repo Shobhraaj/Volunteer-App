@@ -25,73 +25,104 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-50 via-white to-primary-50/50 animate-fade-in relative overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary-400/20 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-violet-400/20 rounded-full blur-[120px] animate-pulse" />
-
-      <div className="glass-card w-full max-w-md px-12 py-16 shadow-2xl animate-slide-up relative z-10">
-        <div className="text-center mb-14">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-3xl inline-flex items-center justify-center text-4xl shadow-lg shadow-primary-500/20 mb-10">
-            🌿
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#f8fafc] dark:bg-[#020617] relative overflow-hidden font-sans">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
+      
+      <div className="w-full max-w-[480px] relative z-10">
+        {/* Main Card */}
+        <div className="bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/60 rounded-[2.5rem] p-10 md:p-14 transition-all duration-500">
+          
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-tr from-emerald-400 to-emerald-600 rounded-3xl shadow-xl shadow-emerald-500/20 mb-8 transform hover:scale-110 transition-all duration-500 cursor-default">
+              <span className="text-4xl">🌿</span>
+            </div>
+            <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">Welcome back</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Please enter your details to sign in</p>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4">Welcome Back</h1>
-          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Sign in to your VolunteerAI account</p>
+
+          {error && (
+            <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 rounded-2xl text-red-600 dark:text-red-400 text-sm font-bold animate-shake">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">Email Address</label>
+              <div className="relative group">
+                <input
+                  type="email"
+                  className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400"
+                  placeholder="name@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between ml-1">
+                <label className="text-sm font-bold text-slate-700 dark:text-slate-300">Password</label>
+                <a href="#" className="text-xs font-bold text-emerald-600 hover:text-emerald-500 transition-colors">Forgot password?</a>
+              </div>
+              <div className="relative group">
+                <input
+                  type="password"
+                  className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 transform hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Signing in...
+                </span>
+              ) : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="mt-10 text-center">
+            <p className="text-slate-500 dark:text-slate-400 font-medium">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-emerald-600 font-bold hover:underline">Create one for free</Link>
+            </p>
+          </div>
         </div>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm font-bold">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-10">
-          <div className="form-group !mb-0">
-            <label className="form-label !mb-3">Email Address</label>
-            <input
-              id="login-email"
-              className="form-input"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group !mb-0">
-            <div className="flex items-center justify-between mb-3">
-              <label className="form-label !mb-0">Password</label>
-              <a href="#" className="text-xs font-bold text-primary-500 hover:underline">Forgot password?</a>
+        {/* Demo Credentials Section - Redesigned as a subtle bottom utility */}
+        <div className="mt-8 px-6">
+          <div className="bg-white/50 dark:bg-slate-900/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-800/50 rounded-[2rem] p-6 text-center">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 opacity-70">Demo Preview Access</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm">
+                <span className="text-emerald-500 uppercase text-[9px]">Org</span>
+                <span className="opacity-70">admin1@volunteer.org</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700 shadow-sm">
+                <span className="text-emerald-500 uppercase text-[9px]">Vol</span>
+                <span className="opacity-70">member1@volunteer.org</span>
+              </div>
             </div>
-            <input
-              id="login-password"
-              className="form-input"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary w-full py-4 text-base" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
-
-        <p className="mt-12 text-center text-sm font-medium text-slate-500 dark:text-slate-400">
-          Don't have an account? <Link to="/register" className="text-primary-500 font-bold hover:underline">Create one</Link>
-        </p>
-
-        <div className="mt-12 p-8 bg-primary-500/5 dark:bg-white/5 rounded-3xl border border-primary-500/10 shadow-inner">
-          <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Demo Access</div>
-          <div className="space-y-3 text-xs font-medium text-slate-600 dark:text-slate-400">
-            <div className="flex justify-between items-center"><span className="font-bold text-primary-500 shrink-0 mr-2 uppercase tracking-tighter">Org</span> <span className="truncate opacity-80">admin1@volunteer.org / MyNewPass123!</span></div>
-            <div className="flex justify-between items-center"><span className="font-bold text-primary-500 shrink-0 mr-2 uppercase tracking-tighter">Vol</span> <span className="truncate opacity-80">member1@volunteer.org / MyNewPass123!</span></div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-
