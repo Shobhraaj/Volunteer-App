@@ -33,8 +33,8 @@ export default function ActivityStatus({ userId, compact = false }) {
   return (
     <div ref={ref} className="relative inline-block">
       <button
-        className={`flex items-center gap-2 rounded-full transition-all active:scale-95 ${
-          compact ? 'p-1' : 'px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'
+        className={`flex items-center gap-2.5 rounded-full transition-all active:scale-95 ${
+          compact ? 'p-2 hover:bg-slate-100 dark:hover:bg-white/5' : 'px-5 py-2.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm'
         }`}
         onClick={() => setOpen((o) => !o)}
         title="Set activity status"
