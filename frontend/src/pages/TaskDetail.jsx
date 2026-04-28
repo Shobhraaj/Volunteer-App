@@ -99,22 +99,33 @@ export default function TaskDetail() {
   };
 
   return (
-    <div className="main-content py-8 px-4 md:px-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-        <div className="animate-slide-up">
-          <Link to="/dashboard" className="text-xs font-bold text-primary-500 hover:underline flex items-center gap-1 mb-4 uppercase tracking-widest">
-            <ChevronLeft className="w-4 h-4" /> Back to Dashboard
-          </Link>
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">{task.title}</h1>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className={`urgency-tag urgency-${task.urgency}`}>{task.urgency}</span>
-            <span className={`badge ${task.status==='completed'?'badge-emerald':task.status==='open'?'badge-cyan':'badge-amber'}`}>{task.status.toUpperCase()}</span>
-            <span className="text-sm font-bold text-slate-400 flex items-center gap-1"><MapPin className="w-4 h-4" /> {task.location_name||'Remote'}</span>
+    <div className="main-content animate-fade-in !py-12">
+      {/* ── Header ─────────────────────────────────────────────────── */}
+      <div className="mb-10 animate-slide-up">
+        <Link to="/dashboard" className="inline-flex items-center gap-2 text-xs font-black text-primary-500 hover:text-primary-600 transition-colors uppercase tracking-[0.2em] mb-6 group">
+          <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" /> 
+          Back to Dashboard
+        </Link>
+        
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-[1.1]">
+              {task.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className={`urgency-tag urgency-${task.urgency} !px-4 !py-1.5 !text-[11px]`}>{task.urgency}</span>
+              <span className={`badge ${task.status==='completed'?'badge-emerald':task.status==='open'?'badge-cyan':'badge-amber'} !px-4 !py-1.5 font-bold text-[11px]`}>{task.status.toUpperCase()}</span>
+              <div className="h-4 w-px bg-slate-200 dark:bg-white/10 mx-1 hidden sm:block" />
+              <span className="text-xs font-bold text-slate-400 flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary-500" /> 
+                {task.location_name||'Remote'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex gap-2 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl w-fit mb-10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+      <div className="flex p-1.5 bg-slate-200/50 dark:bg-white/5 backdrop-blur-sm rounded-2xl w-fit mb-12 animate-slide-up border border-slate-200/50 dark:border-white/5" style={{ animationDelay: '0.1s' }}>
         <TabButton active={tab==='details'} onClick={()=>setTab('details')} label={<><Info className="w-4 h-4" /> Details</>} />
         {user.role==='organizer' && (
           <TabButton active={tab==='matches'} onClick={()=>setTab('matches')} label={<><BrainCircuit className="w-4 h-4" /> AI Matches ({matches.length})</>} />
@@ -125,33 +136,55 @@ export default function TaskDetail() {
 
       <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
         {tab === 'details' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <div className="card">
-                <h3 className="text-xl font-bold mb-6">Description</h3>
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                  {task.description||'No description provided.'}
-                </p>
-                <h3 className="text-xl font-bold mt-10 mb-6">Required Skills</h3>
-                <div className="flex flex-wrap gap-2">
-                  {(task.required_skills||[]).map(s => <span key={s} className="skill-tag !text-xs !px-4 !py-2">{s}</span>)}
-                  {(!task.required_skills||task.required_skills.length===0) && <span className="text-sm font-bold text-slate-400">No specific skills required</span>}
+              <div className="card !p-10">
+                <div className="mb-10">
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-1.5 h-6 bg-primary-500 rounded-full" />
+                    Description
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-lg">
+                    {task.description||'No description provided.'}
+                  </p>
                 </div>
+
+                <div className="mb-10">
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                    <div className="w-1.5 h-6 bg-primary-500 rounded-full" />
+                    Required Skills
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    {(task.required_skills||[]).map(s => (
+                      <span key={s} className="skill-tag !text-[11px] !px-5 !py-2.5 !m-0">
+                        {s.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                      </span>
+                    ))}
+                    {(!task.required_skills||task.required_skills.length===0) && <span className="text-sm font-bold text-slate-400 italic">No specific skills required</span>}
+                  </div>
+                </div>
+
                 {task.start_time && (
-                  <>
-                    <h3 className="text-xl font-bold mt-10 mb-6">Schedule</h3>
-                    <div className="p-6 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10">
-                      <div className="flex items-start gap-4">
-                        <Calendar className="w-8 h-8 text-slate-400" />
-                        <div>
-                          <div className="text-sm font-bold text-slate-900 dark:text-white">Time Window</div>
-                          <p className="text-xs font-medium text-slate-500 mt-1">
-                            {new Date(task.start_time).toLocaleString()} — {task.end_time ? new Date(task.end_time).toLocaleString() : 'Open-ended'}
-                          </p>
+                  <div>
+                    <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                      <div className="w-1.5 h-6 bg-primary-500 rounded-full" />
+                      Schedule
+                    </h3>
+                    <div className="p-8 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 flex items-center gap-6">
+                      <div className="w-14 h-14 bg-white dark:bg-white/5 rounded-xl shadow-sm flex items-center justify-center shrink-0 border border-slate-100 dark:border-white/10">
+                        <Calendar className="w-7 h-7 text-primary-500" />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-slate-400">Time Window</div>
+                        <div className="text-lg font-bold text-slate-900 dark:text-white">
+                          {new Date(task.start_time).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                        </div>
+                        <div className="text-sm font-medium text-slate-500">
+                          to {task.end_time ? new Date(task.end_time).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : 'Open-ended'}
                         </div>
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
@@ -165,46 +198,52 @@ export default function TaskDetail() {
                   initialHistory={JSON.parse(myParticipation.status_history || '[]')} 
                 />
               )}
-              <div className="card">
-                <h3 className="text-xl font-bold mb-8">Task Stats</h3>
-                <div className="space-y-6">
+              <div className="card !p-8 h-fit sticky top-32">
+                <h3 className="text-lg font-bold mb-8 flex items-center gap-3">
+                  <BrainCircuit className="w-5 h-5 text-primary-500" />
+                  Task Stats
+                </h3>
+                <div className="space-y-5">
                   <StatRow label="Current Status" value={task.status} />
                   <StatRow label="Priority"      value={task.urgency} />
-                  <StatRow label="Allocation"    value={`${task.current_volunteers}/${task.max_volunteers}`} />
-                  <StatRow label="Location Type" value={task.location_name||'Remote'} />
+                  <StatRow label="Allocation"    value={`${task.current_volunteers} / ${task.max_volunteers}`} />
+                  <StatRow label="Location"      value={task.location_name||'Remote'} />
                 </div>
 
                 <div className="mt-8 mb-10 pt-8 border-t border-slate-100 dark:border-white/5">
-                  <div className="flex items-center justify-between mb-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <div className="flex items-center justify-between mb-3 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
                     <span>Filling Progress</span>
-                    <span>{Math.round((task.current_volunteers/task.max_volunteers)*100)}%</span>
+                    <span className="text-primary-500">{Math.round((task.current_volunteers/task.max_volunteers)*100)}%</span>
                   </div>
-                  <div className="h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden shadow-inner">
                     <div 
-                      className="h-full bg-primary-500 transition-all duration-1000" 
+                      className="h-full bg-gradient-to-r from-primary-400 to-primary-600 transition-all duration-1000 rounded-full" 
                       style={{ width:`${Math.min(100,(task.current_volunteers/task.max_volunteers)*100)}%` }} 
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {user.role==='volunteer' && myParticipation && myParticipation.status==='assigned' && (
-                    <button className="btn btn-primary w-full py-4" onClick={() => handleStatusChange('accepted')}>Accept Assignment</button>
+                    <button className="btn btn-primary w-full py-4 shadow-xl shadow-primary-500/20" onClick={() => handleStatusChange('accepted')}>Accept Assignment</button>
                   )}
                   {user.role==='volunteer' && myParticipation && myParticipation.status==='accepted' && (
-                    <button className="btn btn-primary w-full py-4" onClick={() => handleStatusChange('active')}>Start Task Now</button>
+                    <button className="btn btn-primary w-full py-4 shadow-xl shadow-primary-500/20" onClick={() => handleStatusChange('active')}>Start Task Now</button>
                   )}
                   {user.role==='volunteer' && myParticipation && myParticipation.status==='active' && (
-                    <button className="btn btn-primary !bg-emerald-500 !shadow-emerald-500/20 w-full py-4" onClick={() => handleStatusChange('completed')}>Mark as Completed</button>
+                    <button className="btn btn-primary !bg-emerald-500 !shadow-emerald-500/30 w-full py-4" onClick={() => handleStatusChange('completed')}>Mark as Completed</button>
                   )}
                   {user.role==='volunteer' && task.status==='open' && !myParticipation && (
-                    <button className="btn btn-primary w-full py-4" onClick={() => setApplyConfirm(true)}>Apply for Task</button>
+                    <button className="btn btn-primary w-full py-4 shadow-xl shadow-primary-500/20" onClick={() => setApplyConfirm(true)}>Apply for Task</button>
                   )}
                   {user.role==='volunteer' && myParticipation && (myParticipation.status==='assigned' || myParticipation.status==='accepted') && (
-                    <button className="btn btn-secondary !text-red-500 hover:!bg-red-500/10 w-full py-4" onClick={() => setWithdrawConfirm(true)}>Withdraw</button>
+                    <button className="btn btn-secondary !bg-red-500/5 !text-red-500 hover:!bg-red-500/10 w-full py-4" onClick={() => setWithdrawConfirm(true)}>Withdraw Application</button>
                   )}
                   {user.role==='organizer' && (
-                    <button className="btn btn-danger w-full py-4" onClick={() => setDeleteConfirm(true)}><Trash2 className="w-4 h-4" /> Cancel Task</button>
+                    <button className="btn btn-danger w-full py-4 shadow-xl shadow-red-500/20 flex items-center justify-center gap-3 font-bold" onClick={() => setDeleteConfirm(true)}>
+                      <Trash2 className="w-5 h-5" /> 
+                      Cancel Task
+                    </button>
                   )}
                 </div>
               </div>
@@ -356,9 +395,9 @@ function EmptyState({ icon, title, text }) {
 
 function StatRow({ label, value }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</span>
-      <span className="text-sm font-bold text-slate-700 dark:text-slate-300 capitalize">{value}</span>
+    <div className="flex items-center justify-between py-1">
+      <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">{label}</span>
+      <span className="text-xs font-extrabold text-slate-900 dark:text-white capitalize bg-slate-50 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-white/5">{value}</span>
     </div>
   );
 }

@@ -7,9 +7,9 @@ export default function StatCard({ icon, label, value, color = 'cyan', onClick }
       onClick={onClick}
     >
       <div className="flex justify-between items-start">
-        <div className="flex flex-col gap-1">
-          <div className="stat-label uppercase tracking-wider font-bold text-xs">{label}</div>
-          <div className="stat-value text-3xl">{value}</div>
+        <div className="flex flex-col">
+          <div className="stat-label">{label}</div>
+          <div className="stat-value">{value}</div>
         </div>
         <div className={`stat-icon ${color} group-hover:scale-110 transition-transform duration-300 shadow-sm`}>{icon}</div>
       </div>
