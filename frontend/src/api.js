@@ -2,26 +2,8 @@
  * API helper — wraps fetch with JWT auth headers and base URL handling.
  */
 
-const BASE = '/api';
-const API_URL = "https://volunteer-backend.onrender.com";
+const BASE = "https://volunteer-backend.onrender.com/api";
 
-export const login = async (data) => {
-  const response = await fetch(`${API_URL}/api/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.detail || "Login failed");
-  }
-
-  return result;
-};
 
 function getToken() {
   return localStorage.getItem('token');
