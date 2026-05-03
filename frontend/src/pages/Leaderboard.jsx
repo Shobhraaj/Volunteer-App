@@ -89,46 +89,60 @@ export default function Leaderboard() {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-center mb-10">
-        <div className="flex gap-2 p-1 bg-slate-100 dark:bg-white/5 rounded-2xl">
-          <button className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${tab === 'all' ? 'bg-white dark:bg-white/10 text-primary-500 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('all')}>All Time</button>
-          <button className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${tab === 'weekly' ? 'bg-white dark:bg-white/10 text-primary-500 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('weekly')}>This Week</button>
+      <div className="flex justify-center mb-24 relative z-30">
+        <div className="flex gap-2 p-1.5 bg-slate-100/50 dark:bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-200/50 dark:border-white/10 shadow-lg">
+          <button className={`px-8 py-3 rounded-xl text-sm font-black transition-all duration-300 ${tab === 'all' ? 'bg-white dark:bg-white/10 text-primary-500 shadow-premium scale-105' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('all')}>All Time</button>
+          <button className={`px-8 py-3 rounded-xl text-sm font-black transition-all duration-300 ${tab === 'weekly' ? 'bg-white dark:bg-white/10 text-primary-500 shadow-premium scale-105' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`} onClick={() => setTab('weekly')}>This Week</button>
         </div>
       </div>
 
-      {/* Podium */}
+      {/* Podium Section — Using natural heights for step effect */}
       {top3.length >= 1 && (
-        <div className="flex flex-wrap items-end justify-center gap-6 mb-16 px-4">
-          {podiumOrder.map((person) => {
+        <div className="flex flex-wrap items-end justify-center gap-6 md:gap-10 mb-28 px-4 relative">
+          {podiumOrder.map((person, idx) => {
             if (!person) return null;
             const isFirst = person.rank === 1;
             const isSecond = person.rank === 2;
             const cfg = PODIUM_CONFIG.find(c => c.rank === person.rank);
             
             return (
-              <div
-                key={person.rank}
-                className={`animate-slide-up glass-card flex flex-col items-center p-6 md:p-8 min-w-[160px] md:min-w-[200px] border-2 text-center transition-transform apple-hover
-                  ${isFirst ? 'bg-amber-500/10 border-amber-500/20 shadow-amber-500/20 -translate-y-8 z-10' : 
-                    isSecond ? 'bg-slate-300/10 border-slate-300/20 shadow-slate-300/20' : 
-                    'bg-orange-500/10 border-orange-500/20 shadow-orange-500/20 -translate-y-4'}
-                `}
+              <div 
+                key={person.rank} 
+                className="animate-slide-up w-full md:w-auto" 
+                style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                <div className="mb-4 drop-shadow-md flex items-center justify-center">{cfg.medal}</div>
-                <Initials name={person.full_name} rank={person.rank} sizeClasses={isFirst ? "w-20 h-20 text-2xl mb-4" : isSecond ? "w-16 h-16 text-xl mb-3" : "w-14 h-14 text-lg mb-3"} />
-                <div className={`font-extrabold text-slate-900 dark:text-white mb-2 ${isFirst ? 'text-lg' : 'text-base'}`}>
-                  {person.full_name}
-                </div>
-                <div className={`font-black tracking-tight mb-2 ${isFirst ? 'text-3xl text-amber-500' : isSecond ? 'text-2xl text-slate-400' : 'text-2xl text-orange-500'}`}>
-                  {person.points?.toLocaleString() || 0}
-                </div>
-                <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
-                  {person.tasks_completed || 0} tasks
-                </div>
-                <div className="flex flex-wrap justify-center gap-1">
-                  {person.badges?.slice(0,2).map(b => (
-                    <span key={b} className="skill-tag !text-[9px] !px-2 !py-0.5 !m-0 !bg-white/50 dark:!bg-white/10">{b}</span>
-                  ))}
+                <div
+                  className={`glass-card flex flex-col items-center p-8 md:p-10 w-full md:w-72 border-2 text-center transition-all duration-300 apple-hover
+                    ${isFirst ? 'bg-amber-500/5 border-amber-500/30 shadow-amber-500/20 z-10 min-h-[460px]' : 
+                      isSecond ? 'bg-slate-400/5 border-slate-400/20 shadow-slate-400/20 min-h-[400px]' : 
+                      'bg-orange-500/5 border-orange-500/20 shadow-orange-500/20 min-h-[340px]'}
+                  `}
+                >
+                  <div className="mb-8 drop-shadow-2xl flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                    {cfg.medal}
+                  </div>
+                  <Initials name={person.full_name} rank={person.rank} sizeClasses={isFirst ? "w-28 h-28 text-4xl mb-6 shadow-2xl" : isSecond ? "w-24 h-24 text-3xl mb-5 shadow-xl" : "w-20 h-20 text-2xl mb-4 shadow-lg"} />
+                  
+                  <div className="flex-1 flex flex-col items-center justify-center min-h-[140px]">
+                    <div className={`font-black text-slate-900 dark:text-white mb-2 tracking-tight ${isFirst ? 'text-3xl' : 'text-xl'}`}>
+                      {person.full_name}
+                    </div>
+                    <div className={`font-black tracking-tighter mb-2 ${isFirst ? 'text-5xl text-amber-500' : isSecond ? 'text-4xl text-slate-400' : 'text-4xl text-orange-500'}`}>
+                      {person.points?.toLocaleString() || 0}
+                    </div>
+                    <div className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400 mb-6 opacity-60">
+                      {person.tasks_completed || 0} Tasks
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-2 mt-auto">
+                    {person.badges?.slice(0, 2).map(b => (
+                      <span key={b} className="skill-tag !text-[10px] !px-3 !py-1 !m-0 !bg-primary-500/10 !text-primary-600 !border !border-primary-500/20 shadow-sm">{b}</span>
+                    ))}
+                    {(!person.badges || person.badges.length === 0) && (
+                      <div className="h-7" /> 
+                    )}
+                  </div>
                 </div>
               </div>
             );
