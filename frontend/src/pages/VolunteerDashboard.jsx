@@ -558,15 +558,14 @@ export default function VolunteerDashboard() {
                         </td>
                         <td>
                           <span
-                            className={`badge badge-${
-                              h.status === "completed"
-                                ? "emerald"
-                                : h.status === "no_show"
-                                  ? "danger"
-                                  : h.status === "assigned"
-                                    ? "cyan"
-                                    : "violet"
-                            }`}
+                            className={`badge badge-${h.status === "completed"
+                              ? "emerald"
+                              : h.status === "no_show"
+                                ? "danger"
+                                : h.status === "assigned"
+                                  ? "cyan"
+                                  : "violet"
+                              }`}
                           >
                             {h.status}
                           </span>
@@ -628,11 +627,10 @@ export default function VolunteerDashboard() {
 function TabButton({ active, onClick, label }) {
   return (
     <button
-      className={`px-6 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
-        active
-          ? "bg-white dark:bg-white/10 text-primary-500 shadow-sm"
-          : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-      }`}
+      className={`px-6 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${active
+        ? "bg-white dark:bg-white/10 text-primary-500 shadow-sm"
+        : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+        }`}
       onClick={onClick}
     >
       {label}
