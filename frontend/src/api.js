@@ -3,6 +3,19 @@
  */
 
 const BASE = '/api';
+const API_URL = "https://volunteer-backend.onrender.com";
+
+export const login = async (data) => {
+  const res = await fetch(`${API_URL}/api/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res.json();
+};
 
 function getToken() {
   return localStorage.getItem('token');
