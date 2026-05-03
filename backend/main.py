@@ -29,16 +29,18 @@ app = FastAPI(
 )
 
 # ── CORS ─────────────────────────────────────────────────────────────
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
+    allow_origins=["*"],  # for now
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ── Register routers ────────────────────────────────────────────────
-app.include_router(auth_router)
+app.include_router(auth_router, prefix="/api")
 app.include_router(volunteers_router)
 app.include_router(tasks_router)
 app.include_router(organizers_router)
