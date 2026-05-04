@@ -17,9 +17,12 @@ export default function AllVolunteers() {
     loadVolunteers();
 
     // Real-time listener for user status/presence
-    const unsub = onSnapshot(collection(db, 'users'), () => {
-      loadVolunteers();
-    });
+    let unsub = () => {};
+    if (db) {
+      unsub = onSnapshot(collection(db, 'users'), () => {
+        loadVolunteers();
+      });
+    }
 
     return () => unsub();
   }, []);

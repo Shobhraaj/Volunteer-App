@@ -97,26 +97,37 @@ export default function ChatBot() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-5 custom-scrollbar min-h-0 w-full" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflowX: 'hidden' }}>
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                className={`w-full flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
               >
                 <div
-                  className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
+                  className={`text-sm leading-relaxed shadow-sm ${
                     msg.role === 'user'
-                      ? 'bg-primary-500 text-white rounded-2xl rounded-tr-none shadow-lg shadow-primary-500/20 font-medium'
-                      : 'bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 rounded-2xl rounded-tl-none border border-slate-200 dark:border-white/10'
+                      ? 'bg-primary-500 text-white font-medium'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
                   }`}
+                  style={{
+                    padding: '12px 16px',
+                    maxWidth: '85%',
+                    wordBreak: 'break-word',
+                    whiteSpace: 'pre-wrap',
+                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                    width: 'fit-content'
+                  }}
                   dangerouslySetInnerHTML={{ __html: formatText(msg.text) }}
                 />
               </div>
             ))}
             {typing && (
-              <div className="flex justify-start animate-fade-in">
-                <div className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl rounded-tl-none px-4 py-3">
-                  <div className="flex gap-1.5">
+              <div className="w-full flex justify-start animate-fade-in">
+                <div 
+                  className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm"
+                  style={{ padding: '12px 16px', borderRadius: '16px 16px 16px 4px' }}
+                >
+                  <div className="flex gap-1.5 items-center h-5">
                     <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
                     <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
                     <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />

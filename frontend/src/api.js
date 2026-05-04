@@ -72,7 +72,7 @@ const api = {
 
   // Analytics
   getDashboard:   () => request('/analytics/dashboard'),
-  getLeaderboard: () => request('/analytics/leaderboard'),
+  getLeaderboard: (limit=20) => request(`/analytics/leaderboard?limit=${limit}`),
   exportReport:   () => `${BASE}/analytics/export`, // Return URL for direct download
 
 
