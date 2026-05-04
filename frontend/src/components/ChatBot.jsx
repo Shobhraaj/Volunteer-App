@@ -16,7 +16,7 @@ const QUICK_REPLIES = [
 const INITIAL_MSGS = [
   {
     role: 'bot',
-    text: "👋 Hi! I'm **VolunteerAI Assistant**. I can help you with task availability, status updates, and more. What would you like to know?",
+    text: "👋 Hi! I'm **EcoPulse Assistant**. I can help you with task availability, status updates, and more. What would you like to know?",
   },
 ];
 
@@ -81,7 +81,7 @@ export default function ChatBot() {
                 🤖
               </div>
               <div>
-                <div className="font-bold text-sm leading-tight">VolunteerAI Assistant</div>
+                <div className="font-bold text-sm leading-tight">EcoPulse Assistant</div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse-soft" />
                   <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active Now</span>

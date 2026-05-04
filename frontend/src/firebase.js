@@ -54,7 +54,7 @@ if (FIREBASE_CONFIGURED) {
   // Stub objects so imports never crash in dev mode
   auth = storage = db = messaging = null;
   console.warn(
-    '[VolunteerAI] Firebase not configured — real-time features disabled.\n' +
+    '[EcoPulse] Firebase not configured — real-time features disabled.\n' +
     'Edit frontend/src/firebase.js and add your Firebase project credentials.'
   );
 }

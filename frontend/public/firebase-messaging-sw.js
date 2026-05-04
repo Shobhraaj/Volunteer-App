@@ -34,7 +34,7 @@ messaging.onBackgroundMessage((payload) => {
 
   const { title, body, icon } = payload.notification || {};
 
-  self.registration.showNotification(title || 'VolunteerAI', {
+  self.registration.showNotification(title || 'EcoPulse', {
     body:  body  || 'You have a new notification.',
     icon:  icon  || '/vite.svg',
     badge: '/vite.svg',

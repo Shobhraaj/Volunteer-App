@@ -158,9 +158,9 @@ export default function VolunteerDashboard() {
       </div>
 
       {/* ── Stat Cards & Achievements ─────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
-        <div className="lg:col-span-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="flex flex-col lg:flex-row items-stretch gap-8 mb-24">
+        <div className="w-full lg:w-2/3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
             <StatCard
               icon={<Trophy className="w-7 h-7" />}
               label="Total Points"
@@ -188,7 +188,7 @@ export default function VolunteerDashboard() {
           </div>
         </div>
 
-        <div className="lg:col-span-4">
+        <div className="w-full lg:w-1/3">
           <div
             className="card h-full flex flex-col p-8 bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-[2.5rem] shadow-premium animate-slide-up"
             style={{ animationDelay: "0.2s" }}

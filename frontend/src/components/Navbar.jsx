@@ -40,7 +40,7 @@ export default function Navbar() {
           <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center text-white shadow-md group-hover:bg-primary-600 transition-colors">
             <Shield className="w-5 h-5" />
           </div>
-          <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">VolunteerAI</span>
+          <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">EcoPulse</span>
         </Link>
 
         {/* Center: Main Nav */}

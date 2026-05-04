@@ -10,7 +10,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { ref, getDownloadURL } from 'firebase/storage';
 
 const DEMO_CERTS = [
-  { id:'c1', title:'Community Volunteer Excellence', issuer:'VolunteerAI Platform', date:'2024-12-15', category:'Achievement', storageRef: null },
+  { id:'c1', title:'Community Volunteer Excellence', issuer:'EcoPulse Platform', date:'2024-12-15', category:'Achievement', storageRef: null },
   { id:'c2', title:'First Aid Training Completion',  issuer:'Red Cross India',     date:'2024-10-20', category:'Training',     storageRef: null },
   { id:'c3', title:'Environmental Cleanup Drive',    issuer:'GreenEarth NGO',      date:'2024-08-05', category:'Participation', storageRef: null },
 ];
@@ -113,7 +113,7 @@ export default function Certificates() {
       } catch (err) { console.error('Storage download failed', err); }
     }
     // Fallback: generate a simple text "certificate"
-    const content = `CERTIFICATE OF ${cert.category?.toUpperCase() || 'PARTICIPATION'}\n\n${cert.title}\n\nThis certifies that the volunteer has successfully participated in the above activity.\n\nIssued by: ${cert.issuer}\nDate: ${new Date(cert.date).toLocaleDateString()}\n\nVolunteerAI Platform`;
+    const content = `CERTIFICATE OF ${cert.category?.toUpperCase() || 'PARTICIPATION'}\n\n${cert.title}\n\nThis certifies that the volunteer has successfully participated in the above activity.\n\nIssued by: ${cert.issuer}\nDate: ${new Date(cert.date).toLocaleDateString()}\n\nEcoPulse Platform`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
